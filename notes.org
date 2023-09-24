@@ -1,0 +1,55 @@
+* Eggjam 20 - Rhythms & Layers + Loving Mondays
+** Ideas
+   - Autorunner platformer where you swap between different layers of
+     foreground & background
+   - Single screen rhythm game where you try to hit different buttons
+     on different layers that reflect the song
+   - Play as an AI in charge of regulating a space station / asteroid
+     habitat / etc.
+     + Rhythm by way of the changing days
+     + Layers by way of the different interplay of systems _massive hand wave_
+     + In addition to regular systems  you have semi-random inputs &
+       outputs such as trade delegations, refugee crises, solar
+       storms, etc
+     + A fixed number of actions per day as the resource
+     + Various degress of "success" (as judged by the player)
+       measured: population size, health standards, wealth standards,
+       political power, trading power, harmony, research, spirituality
+     + Means the game is mostly UI, with a little gfx and wanting of
+       solid music & pleasant sfx
+* The game where you play as an AI running a space habitat
+** Story
+   So you've just turned up to run a space habitat after the previous
+   overeer moved on to better things. Your job is to make all the
+   things go and ensure none of the things stop that shouldn't stop.
+** Gameplay
+  Basic actions:
+  - Attend to daily jobs (some button clicking for now)
+  - Respond to regular events (more button clicking)
+  -  
+*** Habitat daily jobs
+    Either have these done on different days or require only a certain
+    amount done in a given timeframe. Probably not all every day.
+    - Feed waste to energy source -> increases energy
+    - Rotate hydroponics racks -> uses energy, increases terrarium
+    - Check life systems -> uses energy, increases life systems
+    - Push life sustaining feedback cycles -> ???
+    - Correct position of habitat -> uses energy, increases efficiency
+    - Heat systems enjiggered -> uses energy, increases life systems
+    - Check visitors and incoming cargo -> increases efficiency
+    - Reply to general questions -> increases happniess
+*** Resources
+    - Time / turns
+    - Energy?
+    - Matter?
+    - Diplomacy?
+*** Measures
+    - Energy (?)
+    - Terrarium system
+    - Life systems (air, gravity, heat)
+    - Happiness
+    - Efficiency
+*** Rate of change
+    - Energy usage
+    - Matter total
+    - Terrarium deterioration
