@@ -26,7 +26,8 @@
   Basic actions:
   - Attend to daily jobs (some button clicking for now)
   - Respond to regular events (more button clicking)
-  -  
+  Rhythms:
+  - Each day, except Monday, has at least one required job.
 *** Habitat daily jobs
     Either have these done on different days or require only a certain
     amount done in a given timeframe. Probably not all every day.
@@ -49,6 +50,7 @@
     - Life systems (air, gravity, heat)
     - Happiness
     - Efficiency
+    - Shielding
 *** Rate of change
     - Energy usage
     - Matter total
