@@ -8,11 +8,25 @@
 
 config_version=4
 
+_global_script_classes=[ {
+"base": "CheckBox",
+"class": "JobButton",
+"language": "GDScript",
+"path": "res://scripts/JobButton.gd"
+} ]
+_global_script_class_icons={
+"JobButton": ""
+}
+
 [application]
 
 config/name="Eggjam 20"
 run/main_scene="res://Root.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Habitat="*res://scripts/Habitat.gd"
 
 [display]
 
