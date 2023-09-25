@@ -39,6 +39,20 @@
     - Heat systems enjiggered -> uses energy, increases life systems
     - Check visitors and incoming cargo -> increases efficiency
     - Reply to general questions -> increases happniess
+**** Mini game ideas
+     - Feed reactor :: Puzzle Bobble style aim at a fixed/moving target
+     - Hydroponics rack :: slot machine style rotating objects that
+          need to be stopped in place
+     - Check life systems :: Autorunner repairing issues as they appear
+     - Correct habitat pos :: dodge 'em up? simplified pool game?
+     - Heat sinks coordinated :: a rhythm-type game where scrolling
+          ribbons are aligned
+     - Land incoming ships :: catch falling ships
+     - Patch shield holes :: some kind of whack-a-mole
+     - Reply to questions :: Multiple choice questions
+     - Trading negotiations :: pong–like
+     - Asteroid storm :: missile–command–like
+     - Disease outbreak :: wave shoot'em up against virii
 *** Resources
     - Time / turns
     - Energy?
