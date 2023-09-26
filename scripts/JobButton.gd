@@ -7,5 +7,7 @@ signal job_done(job)
 var job : Habitat.Job
 
 func _ready():
-	pass # Replace with function body.
+	connect('pressed', self, 'job_done')
 
+func job_done():
+	emit_signal('job_done', job)

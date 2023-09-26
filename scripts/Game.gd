@@ -36,7 +36,7 @@ func tick():
 	clock_time += 1
 	if clock_time == (60*60*24):
 		roll_over_clock()
-	emit_signal("clock_tick", clock_time)
+	emit_signal("clock_tick", clock_time, 1)
 	move_passage_of_time()
 
 func advance_day():
@@ -44,10 +44,10 @@ func advance_day():
 	var step = ((60*60*24)-clock_time) / 60
 	for _i in range(clock_time, 60*60*24, step):
 		clock_time += step
-		emit_signal("clock_tick", clock_time)
+		emit_signal("clock_tick", clock_time, step)
 		yield(get_tree(), "idle_frame")
 
 	roll_over_clock()
 
-	emit_signal("clock_tick", clock_time)
+	emit_signal("clock_tick", clock_time, 1)
 	move_passage_of_time()
