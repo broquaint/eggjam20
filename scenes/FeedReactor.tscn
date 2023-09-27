@@ -1,8 +1,9 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scripts/FeedReactor.gd" type="Script" id=1]
 [ext_resource path="res://scenes/TrashBall.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/images/reactor input.png" type="Texture" id=3]
+[ext_resource path="res://ui.tres" type="Theme" id=4]
 
 [sub_resource type="RectangleShape2D" id=8]
 extents = Vector2( 256, 75.5 )
@@ -60,22 +61,23 @@ color = Color( 0.203922, 0.203922, 0.203922, 0.501961 )
 position = Vector2( 400, 550 )
 rotation = 3.14159
 points = PoolVector2Array( 0, 0, 0, 150 )
+default_color = Color( 0.415686, 0.745098, 0.188235, 1 )
 
-[node name="ReactorInput" type="Sprite" parent="."]
+[node name="ReactorInput" type="Area2D" parent="."]
 position = Vector2( 415, 131 )
-texture = ExtResource( 3 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Area2D" type="Area2D" parent="ReactorInput"]
 space_override = 3
 gravity_point = true
 linear_damp = 1.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="ReactorInput/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ReactorInput"]
 position = Vector2( 3, -0.5 )
 shape = SubResource( 8 )
+
+[node name="Sprite" type="Sprite" parent="ReactorInput"]
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "AimSwing"
@@ -102,3 +104,52 @@ shape = SubResource( 4 )
 [node name="Reload" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
+
+[node name="PlayTime" type="Timer" parent="."]
+wait_time = 20.0
+one_shot = true
+
+[node name="Status" type="HBoxContainer" parent="."]
+margin_left = 520.0
+margin_top = 526.0
+margin_right = 802.0
+margin_bottom = 590.0
+theme = ExtResource( 4 )
+
+[node name="Label" type="Label" parent="Status"]
+margin_top = 16.0
+margin_right = 62.0
+margin_bottom = 47.0
+text = "Trash: "
+
+[node name="TrashBallCount" type="Label" parent="Status"]
+margin_left = 66.0
+margin_top = 16.0
+margin_right = 92.0
+margin_bottom = 47.0
+text = "00"
+
+[node name="VSeparator" type="VSeparator" parent="Status"]
+margin_left = 96.0
+margin_right = 104.0
+margin_bottom = 64.0
+
+[node name="TimeLeft" type="Label" parent="Status"]
+margin_left = 108.0
+margin_top = 16.0
+margin_right = 168.0
+margin_bottom = 47.0
+rect_min_size = Vector2( 60, 0 )
+text = "00:00"
+
+[node name="VSeparator2" type="VSeparator" parent="Status"]
+margin_left = 172.0
+margin_right = 180.0
+margin_bottom = 64.0
+
+[node name="Score" type="Label" parent="Status"]
+margin_left = 184.0
+margin_top = 16.0
+margin_right = 221.0
+margin_bottom = 47.0
+text = "0/0"
