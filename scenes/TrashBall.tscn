@@ -11,6 +11,7 @@ radius = 48.0
 
 [node name="TrashBall" type="RigidBody2D"]
 position = Vector2( 400, 550 )
+mode = 1
 physics_material_override = SubResource( 5 )
 gravity_scale = 0.0
 script = ExtResource( 2 )

@@ -1,5 +1,7 @@
 extends Node2D
 
+signal game_completed(ball_total, score)
+
 enum PlayState {
 	AT_START,
 	PLAYING,
@@ -44,7 +46,7 @@ func _process(_delta):
 			play_state = PlayState.PLAYING
 			$ReactorAnimationPlayer.play("StartReactor")
 		launch_waste()
-	var time_left = $PlayTime.wait_time if $PlayTime.is_stopped() else $PlayTime.time_left
+	var time_left = $PlayTime.wait_time if $PlayTime.is_stopped() and play_state < PlayState.TRASH_FINISHED else $PlayTime.time_left
 	if play_state != PlayState.TRASH_FINISHED:
 		$Status/TimeLeft.text = '%d:%02d' % [time_left, 100 * fmod(time_left, 1.0)]
 	$Status/TrashBallCount.text = '%d' % trash_ball_count
@@ -55,6 +57,7 @@ func launch_waste():
 	if trash_ball_count == 0:
 		end_game()
 	launch_state = LauncherState.LAUNCHED
+	trash_ball.mode = RigidBody.MODE_RIGID
 	trash_ball.apply_central_impulse(Vector2(0, 500).rotated(deg2rad($Trajectory.rotation_degrees)))
 	$SwingAnimationPlayer.stop()
 	$Reload.start()
@@ -76,6 +79,7 @@ func end_game():
 	play_state = PlayState.TRASH_FINISHED
 	if not $PlayTime.is_stopped():
 		$PlayTime.paused = true
+	$SwingAnimationPlayer.stop(false)
 	# Wait some time for things to play out then call it whatever state.
 	yield(get_tree().create_timer(3.0), 'timeout')
 	play_state = PlayState.ALL_DONE
@@ -85,7 +89,7 @@ func end_game():
 			var shrink = get_tree().create_tween()
 			shrink.tween_property(ball.get_node('Sprite'), 'scale', Vector2.ZERO, 1.0)
 			shrink.set_parallel()
-	# emit_signal("game_complete", ...)
+	emit_signal("game_completed", trash_ball_total, score)
 
 func trash_in_reactor(ball):
 	if play_state == PlayState.ALL_DONE:

@@ -2,14 +2,16 @@ extends Node2D
 
 signal clock_tick(clock_time)
 signal calendar_update(day)
+
 var clock_time : int = 0
 var day : int = 24
 
 func _ready():
 	connect("clock_tick", $UI/Status, "update_clock")
 	connect("calendar_update", $UI/Status, "update_date")
-	connect("clock_tick", $UI/Measures, "update_measures")
+	connect("clock_tick", $UI/Measures, "tick_update_measures")
 	connect("clock_tick", Habitat, "update_measures")
+	Habitat.connect("measures_updated", $UI/Measures, "change_update_measures")
 	$UI/Status/Advance.connect("pressed", self, "advance_day")
 
 	for stub in $UI/JobList/Jobs.get_children():
@@ -18,7 +20,7 @@ func _ready():
 		var jb = JobButton.new()
 		jb.job = job
 		jb.text = job.description
-		jb.connect('job_done', Habitat, 'job_completed')
+		jb.connect('job_started', Habitat, 'job_begun')
 		$UI/JobList/Jobs.add_child(jb)
 	move_passage_of_time()
 

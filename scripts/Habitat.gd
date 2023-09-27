@@ -1,6 +1,8 @@
 # class_name Habitat
 extends Node
 
+signal measures_updated()
+
 const DAY : int  = 60 * 60 * 24
 const WEEK : int = DAY * 7
 
@@ -14,6 +16,8 @@ const TERRARIUM_DETERIORATION = DAY
 const ENERGY_MAX = WEEK
 const TERRARIUM_MAX = WEEK * 2
 const LIFE_SYSTEMS_MAX = WEEK / 2
+
+onready var feed_reactor_scene = preload("res://scenes/FeedReactor.tscn")
 
 var energy : float = 100.0
 var terrarium : float = 100.0
@@ -31,7 +35,7 @@ var jobs = [
 		funcref(self, '_job_feed_reactor')
 	),
 	Job.create(
-		'Rotate hydroponics',
+		'Attend to hydroponics',
 		'terrarium',
 		112233,
 		'Wednesday',
@@ -53,11 +57,25 @@ func update_measures(_time: int, delta: int):
 #	print("energy now ", energy, " after ", delta)
 #	life_systems -= float(clock_time) / float(LIFE_SYSTEMS_WEAR)
 
-func job_completed(job):
+func job_begun(job):
 	job.change_effect.call_func()
+	emit_signal("measures_updated")
 
 func _job_feed_reactor():
-	energy = clamp(energy + ENERGY_USAGE, 0.0, ENERGY_MAX)
+	var feed_reactor = feed_reactor_scene.instance()
+	feed_reactor.position = Vector2(112, 84)
+	get_node("/root/Root").add_child(feed_reactor)
+	var res = yield(feed_reactor, "game_completed")
+
+	yield(get_tree().create_timer(2.0), 'timeout')
+	var fade = get_tree().create_tween()
+	fade.tween_property(feed_reactor, 'modulate', Color('#00ffffff'), 1.0)
+	fade.tween_callback(feed_reactor, 'queue_free')
+
+	var up_by = float(ENERGY_USAGE) * (float(res[1]) / float(res[0]))
+	var new_val = clamp(energy + up_by, 0.0, float(ENERGY_MAX))
+	print("energy from ", energy, ' to ', new_val, ' based on ', res, ' up by ', up_by)
+	energy = new_val
 
 func _job_rotate_hydroponics():
 	terrarium = clamp(terrarium + TERRARIUM_DETERIORATION, 0.0, TERRARIUM_MAX)
