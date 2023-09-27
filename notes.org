@@ -69,3 +69,13 @@
     - Energy usage
     - Matter total
     - Terrarium deterioration
+** Misc code
+*** Draw a circle in pico8
+#+BEGIN_SRC lua
+local x, y, r = 0, 0, 1
+for i = 1, 360 do
+  local angle = i * 3.141579 / 180
+  local ptx, pty = x + r * cos( angle ), y + r * sin( angle )
+  pset( ptx, pty )
+end
+#+END_SRC
