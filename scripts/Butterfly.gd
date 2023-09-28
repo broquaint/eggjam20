@@ -29,3 +29,9 @@ func flap():
 func start_flapping():
 	can_move = true
 	flap()
+
+func fly_away():
+	var fx = -30 if position.x < 400 else 30
+	var fy = -30 if position.y < 300 else 30
+	apply_central_impulse(Vector2(fx, fy))
+	can_move = false

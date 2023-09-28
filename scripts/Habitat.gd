@@ -84,7 +84,7 @@ func _job_rotate_hydroponics():
 	get_node("/root/Root").add_child(maintain_hydroponics)
 	var score = yield(maintain_hydroponics, "game_completed")
 
-	yield(get_tree().create_timer(2.0), 'timeout')
+	yield(get_tree().create_timer(1.0), 'timeout')
 	var fade = get_tree().create_tween()
 	fade.tween_property(maintain_hydroponics, 'modulate', Color('#00ffffff'), 1.0)
 	fade.tween_callback(maintain_hydroponics, 'queue_free')

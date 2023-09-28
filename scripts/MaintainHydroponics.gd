@@ -80,9 +80,13 @@ func caught_butterfly(butterfly):
 	var x = 400 + randi() % 150 * (-1 if randi() % 2 == 0 else 1)
 	var y = 300 + randi() % 150 * (-1 if randi() % 2 == 0 else 1)
 	var bf = add_butterfly(Vector2(x, y))
-#	bf.can_move = true
 	bf.start_flapping()
 
 func end_game():
 	play_state = PlayState.ALL_DONE
 	emit_signal('game_completed', score)
+
+	for wall in [$LeftWall, $RightWall, $TopWall, $BottomWall]:
+		wall.get_node('CollisionShape2D').disabled = true
+	for bf in butterflies:
+		bf.fly_away()
