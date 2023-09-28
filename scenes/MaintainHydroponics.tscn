@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/images/net for butterflies.png" type="Texture" id=1]
+[ext_resource path="res://ui.tres" type="Theme" id=2]
 [ext_resource path="res://scripts/MaintainHydroponics.gd" type="Script" id=3]
 [ext_resource path="res://scripts/NetForButterflies.gd" type="Script" id=4]
 
@@ -13,7 +14,7 @@ extents = Vector2( 401, 10 )
 [node name="MaintainHydroponics" type="Node2D"]
 script = ExtResource( 3 )
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="GameOutline" type="ColorRect" parent="."]
 margin_right = 800.0
 margin_bottom = 600.0
 color = Color( 0.203922, 0.203922, 0.203922, 0.501961 )
@@ -82,3 +83,47 @@ __meta__ = {
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BottomWall"]
 position = Vector2( 391, 0 )
 shape = SubResource( 2 )
+
+[node name="StatusOutline" type="ColorRect" parent="."]
+margin_left = 507.0
+margin_top = 535.0
+margin_right = 729.0
+margin_bottom = 583.0
+color = Color( 0.427451, 0.427451, 0.427451, 0.431373 )
+
+[node name="Status" type="HBoxContainer" parent="."]
+margin_left = 520.0
+margin_top = 526.0
+margin_right = 802.0
+margin_bottom = 590.0
+theme = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="Status"]
+margin_top = 16.0
+margin_right = 101.0
+margin_bottom = 47.0
+text = "Butterflies:"
+
+[node name="Score" type="Label" parent="Status"]
+margin_left = 105.0
+margin_top = 16.0
+margin_right = 118.0
+margin_bottom = 47.0
+text = "0"
+
+[node name="VSeparator2" type="VSeparator" parent="Status"]
+margin_left = 122.0
+margin_right = 130.0
+margin_bottom = 64.0
+
+[node name="TimeLeft" type="Label" parent="Status"]
+margin_left = 134.0
+margin_top = 16.0
+margin_right = 194.0
+margin_bottom = 47.0
+rect_min_size = Vector2( 60, 0 )
+text = "00:00"
+
+[node name="PlayTime" type="Timer" parent="."]
+wait_time = 20.0
+one_shot = true
