@@ -9,12 +9,18 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "RigidBody2D",
+"class": "Butterfly",
+"language": "GDScript",
+"path": "res://scripts/Butterfly.gd"
+}, {
 "base": "CheckBox",
 "class": "JobButton",
 "language": "GDScript",
 "path": "res://scripts/JobButton.gd"
 } ]
 _global_script_class_icons={
+"Butterfly": "",
 "JobButton": ""
 }
 

@@ -1,8 +1,8 @@
 extends KinematicBody2D
 
-const THRUST : float = 12.0
+const THRUST : float = 6.0
 const MAX_SPEED : float = 200.0
-const ROTATION_SPEED : float = 6.0 * 60
+const ROTATION_SPEED : float = 3.0 * 60
 
 var velocity : Vector2
 
@@ -25,11 +25,14 @@ func _physics_process(delta):
 		velocity += acceleration
 
 	# dampen a bit
-	velocity *= 0.98
+	velocity *= 0.985
 
 	# cap speed
 	if velocity.length() > MAX_SPEED:
 		velocity = velocity.normalized() * MAX_SPEED
 		# velocity vector is added to position in BaseObject.gd
 
-	velocity = move_and_slide(velocity)
+#	velocity = move_and_slide(velocity)
+	var collision = move_and_collide(velocity * delta)
+	if collision:
+		velocity = velocity.bounce(collision.normal)

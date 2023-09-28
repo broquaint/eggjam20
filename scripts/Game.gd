@@ -7,6 +7,8 @@ var clock_time : int = 0
 var day : int = 24
 
 func _ready():
+	randomize()
+
 	connect("clock_tick", $UI/Status, "update_clock")
 	connect("calendar_update", $UI/Status, "update_date")
 	connect("clock_tick", $UI/Measures, "tick_update_measures")

@@ -26,9 +26,12 @@ __meta__ = {
 "_edit_group_": true
 }
 
-[node name="Area2D" type="Area2D" parent="NetForButterflies"]
+[node name="Catchment" type="Area2D" parent="NetForButterflies"]
+space_override = 3
+gravity_point = true
+linear_damp = 1.0
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="NetForButterflies/Area2D"]
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="NetForButterflies/Catchment"]
 position = Vector2( 0.499998, -32 )
 scale = Vector2( 3.95, 1.5 )
 polygon = PoolVector2Array( -10, -0.666666, -8.98734, 3.33333, -3.67089, 8, -2.1519, 9.33333, 1.89873, 9.33333, 3.67089, 8.66667, 7.72152, 5.33333, 10.2532, 0, 7.46835, -6, 2.91139, -9.33333, -2.91139, -9.33333, -7.72152, -6 )
