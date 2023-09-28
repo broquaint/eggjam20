@@ -1,10 +1,11 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://ui.tres" type="Theme" id=1]
 [ext_resource path="res://assets/images/habitat.png" type="Texture" id=2]
 [ext_resource path="res://scripts/Game.gd" type="Script" id=3]
 [ext_resource path="res://scripts/Status.gd" type="Script" id=4]
 [ext_resource path="res://scripts/Measures.gd" type="Script" id=5]
+[ext_resource path="res://scenes/MeasureStatus.tscn" type="PackedScene" id=6]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.317647, 0.317647, 0.317647, 0.392157 )
@@ -65,75 +66,62 @@ margin_right = 131.0
 margin_bottom = 590.0
 script = ExtResource( 5 )
 
-[node name="Label" type="Label" parent="UI/Measures"]
-margin_right = 128.0
-margin_bottom = 31.0
-text = "Energy"
-
-[node name="EnergyMeter" type="ColorRect" parent="UI/Measures"]
-margin_top = 35.0
+[node name="Energy" parent="UI/Measures" instance=ExtResource( 6 )]
 margin_right = 128.0
 margin_bottom = 43.0
-rect_min_size = Vector2( 0, 8 )
 
-[node name="Label5" type="Label" parent="UI/Measures"]
+[node name="Terrarium" parent="UI/Measures" instance=ExtResource( 6 )]
 margin_top = 47.0
 margin_right = 128.0
-margin_bottom = 78.0
-text = "Terrarium"
-
-[node name="TerrariumMeter" type="ColorRect" parent="UI/Measures"]
-margin_top = 82.0
-margin_right = 128.0
 margin_bottom = 90.0
-rect_min_size = Vector2( 0, 8 )
-
-[node name="Label2" type="Label" parent="UI/Measures"]
-margin_top = 94.0
-margin_right = 128.0
-margin_bottom = 125.0
-text = "Life systems"
 
 [node name="LifeSystemsMeter" type="ColorRect" parent="UI/Measures"]
-margin_top = 129.0
+visible = false
+margin_top = 4.0
 margin_right = 128.0
-margin_bottom = 137.0
+margin_bottom = 12.0
 rect_min_size = Vector2( 0, 8 )
 
 [node name="Label6" type="Label" parent="UI/Measures"]
-margin_top = 141.0
+visible = false
+margin_top = 4.0
 margin_right = 128.0
-margin_bottom = 172.0
+margin_bottom = 35.0
 text = "Shields"
 
 [node name="ShieldMeter" type="ColorRect" parent="UI/Measures"]
-margin_top = 176.0
+visible = false
+margin_top = 4.0
 margin_right = 128.0
-margin_bottom = 184.0
+margin_bottom = 12.0
 rect_min_size = Vector2( 0, 8 )
 
 [node name="Label3" type="Label" parent="UI/Measures"]
-margin_top = 188.0
+visible = false
+margin_top = 4.0
 margin_right = 128.0
-margin_bottom = 219.0
+margin_bottom = 35.0
 text = "Happiness"
 
 [node name="HappinessMeter" type="ColorRect" parent="UI/Measures"]
-margin_top = 223.0
+visible = false
+margin_top = 4.0
 margin_right = 128.0
-margin_bottom = 231.0
+margin_bottom = 12.0
 rect_min_size = Vector2( 0, 8 )
 
 [node name="Label4" type="Label" parent="UI/Measures"]
-margin_top = 235.0
+visible = false
+margin_top = 4.0
 margin_right = 128.0
-margin_bottom = 266.0
+margin_bottom = 35.0
 text = "Efficiency"
 
 [node name="EfficiencyMeter" type="ColorRect" parent="UI/Measures"]
-margin_top = 270.0
+visible = false
+margin_top = 4.0
 margin_right = 128.0
-margin_bottom = 278.0
+margin_bottom = 12.0
 rect_min_size = Vector2( 0, 8 )
 
 [node name="JobList" type="VBoxContainer" parent="UI"]
