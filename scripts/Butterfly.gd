@@ -28,3 +28,4 @@ func flap():
 
 func start_flapping():
 	can_move = true
+	flap()

@@ -18,6 +18,7 @@ const TERRARIUM_MAX = WEEK * 2
 const LIFE_SYSTEMS_MAX = WEEK / 2
 
 onready var feed_reactor_scene = preload("res://scenes/FeedReactor.tscn")
+onready var maintain_hydroponics_scene = preload("res://scenes/MaintainHydroponics.tscn")
 
 var energy : float = 100.0
 var terrarium : float = 100.0
@@ -35,7 +36,7 @@ var jobs = [
 		funcref(self, '_job_feed_reactor')
 	),
 	Job.create(
-		'Attend to hydroponics',
+		'Maintain hydroponics',
 		'terrarium',
 		112233,
 		'Wednesday',
@@ -78,7 +79,20 @@ func _job_feed_reactor():
 	energy = new_val
 
 func _job_rotate_hydroponics():
-	terrarium = clamp(terrarium + TERRARIUM_DETERIORATION, 0.0, TERRARIUM_MAX)
+	var maintain_hydroponics = maintain_hydroponics_scene.instance()
+	maintain_hydroponics.position = Vector2(112, 84)
+	get_node("/root/Root").add_child(maintain_hydroponics)
+	var score = yield(maintain_hydroponics, "game_completed")
+
+	yield(get_tree().create_timer(2.0), 'timeout')
+	var fade = get_tree().create_tween()
+	fade.tween_property(maintain_hydroponics, 'modulate', Color('#00ffffff'), 1.0)
+	fade.tween_callback(maintain_hydroponics, 'queue_free')
+
+	var up_by = float(TERRARIUM_DETERIORATION) * (1 + (score/10))
+	var new_val = clamp(terrarium + up_by, 0.0, float(TERRARIUM_MAX))
+	print("terrarium from ", terrarium, ' to ', new_val, ' based on ', score, ' up by ', up_by)
+	terrarium = new_val
 
 func energy_percent():
 	return 100 * (energy / ENERGY_MAX)

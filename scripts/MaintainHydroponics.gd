@@ -1,6 +1,7 @@
 extends Node2D
 
 signal play_started()
+signal game_completed(score)
 
 enum PlayState {
 	AT_START,
@@ -26,6 +27,8 @@ func _ready():
 	$NetForButterflies/Catchment.connect("body_exited", self, "losing_butterfly")
 	$NetForButterflies.connect('player_moved', self, 'start_catching')
 
+	$PlayTime.connect('timeout', self, 'end_game')
+
 func add_butterfly(offset):
 	var bf = butterfly_scene.instance()
 	bf.get_node("EscapeWindow").connect("timeout", self, "caught_butterfly", [bf])
@@ -33,6 +36,7 @@ func add_butterfly(offset):
 	connect('play_started', bf, 'start_flapping')
 	add_child(bf)
 	butterflies.append(bf)
+	return bf
 
 func start_catching():
 	play_state = PlayState.PLAYING
@@ -55,6 +59,9 @@ func losing_butterfly(butterfly):
 	butterfly.get_node('EscapeWindow').stop()
 
 func caught_butterfly(butterfly):
+	if play_state == PlayState.ALL_DONE:
+		return
+
 	score += 1
 
 	butterfly.get_node('Collision').disabled = true
@@ -72,4 +79,10 @@ func caught_butterfly(butterfly):
 
 	var x = 400 + randi() % 150 * (-1 if randi() % 2 == 0 else 1)
 	var y = 300 + randi() % 150 * (-1 if randi() % 2 == 0 else 1)
-	add_butterfly(Vector2(x, y))
+	var bf = add_butterfly(Vector2(x, y))
+#	bf.can_move = true
+	bf.start_flapping()
+
+func end_game():
+	play_state = PlayState.ALL_DONE
+	emit_signal('game_completed', score)
