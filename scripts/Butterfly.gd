@@ -13,7 +13,7 @@ const COLOURS = [
 
 func _ready():
 	$Sprite.modulate = COLOURS[randi() % COLOURS.size()]
-	$Move.wait_time = 0.5 + (3.0 * randf())
+	$Move.wait_time = 0.5 + (2.2 * randf())
 	$Move.start()
 
 func _process(_delta):

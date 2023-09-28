@@ -14,12 +14,16 @@ onready var butterfly_scene = preload("res://scenes/Butterfly.tscn")
 var play_state
 
 var butterflies = []
+var butterfly_total = 10
 var score : int = 0
 
 func _ready():
+#	randomize()
 	play_state = PlayState.AT_START
-	for i in range(1, 4):
-		add_butterfly(Vector2((i+1) * 100, (i+1) * 100))
+	for i in range(1, butterfly_total+1):
+		var x = (1 + (i % 4)) * 150
+		var y = (1 + floor(i / 4)) * 150
+		add_butterfly(Vector2(randi() % 100 + x, randi() % 100 + y))
 
 	$NetForButterflies.position = Vector2(100, 100)
 	$NetForButterflies.rotation_degrees = 90
@@ -30,12 +34,14 @@ func _ready():
 	$PlayTime.connect('timeout', self, 'end_game')
 
 func add_butterfly(offset):
+	print("butterfly at ", offset.x, 'x', offset.y)
 	var bf = butterfly_scene.instance()
 	bf.get_node("EscapeWindow").connect("timeout", self, "caught_butterfly", [bf])
-	bf.position = Vector2(offset.x + randi() % 50, offset.y + randi() % 50)
+	bf.position = Vector2(offset.x , offset.y)
 	connect('play_started', bf, 'start_flapping')
 	add_child(bf)
 	butterflies.append(bf)
+	move_child(bf, 3)
 	return bf
 
 func start_catching():
@@ -44,9 +50,9 @@ func start_catching():
 	emit_signal('play_started')
 
 func _process(_delta):
-	var time_left = $PlayTime.time_left
+	var time_left = $PlayTime.wait_time if $PlayTime.is_stopped() and play_state < PlayState.ALL_DONE else $PlayTime.time_left
 	$Status/TimeLeft.text = '%d:%02d' % [time_left, 100 * fmod(time_left, 1.0)]
-	$Status/Score.text = '%d' % score
+	$Status/Score.text = '%d/%d' % [score, butterfly_total]
 
 func catching_butterfly(butterfly):
 	if not(butterfly is Butterfly):
@@ -64,12 +70,13 @@ func caught_butterfly(butterfly):
 
 	score += 1
 
+	butterfly.can_move = false
 	butterfly.get_node('Collision').disabled = true
 	var sprite = butterfly.get_node('Sprite')
 
 	var sb : Tween = butterfly.get_node('Shrink')
 	sb.interpolate_property(
-		sprite, 'scale', sprite.scale, Vector2.ZERO, 0.5, Tween.TRANS_EXPO, Tween.EASE_IN
+		sprite, 'scale', sprite.scale, Vector2.ZERO, 0.5, Tween.TRANS_EXPO, Tween.EASE_OUT
 	)
 	sb.start()
 	yield(sb, "tween_completed")
@@ -77,16 +84,16 @@ func caught_butterfly(butterfly):
 	butterflies.erase(butterfly)
 	butterfly.queue_free()
 
-	var x = 400 + randi() % 150 * (-1 if randi() % 2 == 0 else 1)
-	var y = 300 + randi() % 150 * (-1 if randi() % 2 == 0 else 1)
-	var bf = add_butterfly(Vector2(x, y))
-	bf.start_flapping()
+	if butterflies.empty():
+		end_game()
 
 func end_game():
 	play_state = PlayState.ALL_DONE
+	$PlayTime.paused = true
 	emit_signal('game_completed', score)
 
-	for wall in [$LeftWall, $RightWall, $TopWall, $BottomWall]:
-		wall.get_node('CollisionShape2D').disabled = true
-	for bf in butterflies:
-		bf.fly_away()
+	if not butterflies.empty():
+		for wall in [$LeftWall, $RightWall, $TopWall, $BottomWall]:
+			wall.get_node('CollisionShape2D').disabled = true
+		for bf in butterflies:
+			bf.fly_away()
