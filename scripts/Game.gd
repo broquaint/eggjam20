@@ -15,6 +15,7 @@ func _ready():
 	connect("clock_tick", Habitat, "update_measures")
 	Habitat.connect("measures_updated", $UI/Measures, "change_update_measures")
 	$UI/Status/Advance.connect("pressed", self, "advance_day")
+	$PassageOfTime.connect('timeout', self, 'tick')
 
 	for stub in $UI/JobList/Jobs.get_children():
 		$UI/JobList/Jobs.remove_child(stub)
@@ -24,12 +25,8 @@ func _ready():
 		jb.text = job.description
 		jb.connect('job_started', Habitat, 'job_begun')
 		$UI/JobList/Jobs.add_child(jb)
-	move_passage_of_time()
 
-func move_passage_of_time():
 	$PassageOfTime.start()
-	yield($PassageOfTime, "timeout")
-	tick()
 
 func roll_over_clock():
 	clock_time = 0
@@ -41,7 +38,7 @@ func tick():
 	if clock_time == (60*60*24):
 		roll_over_clock()
 	emit_signal("clock_tick", clock_time, 1)
-	move_passage_of_time()
+	$PassageOfTime.start()
 
 func advance_day():
 	$PassageOfTime.stop()
@@ -54,4 +51,4 @@ func advance_day():
 	roll_over_clock()
 
 	emit_signal("clock_tick", clock_time, 1)
-	move_passage_of_time()
+	$PassageOfTime.start()

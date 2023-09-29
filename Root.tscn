@@ -30,32 +30,34 @@ alignment = 1
 script = ExtResource( 4 )
 
 [node name="Date" type="Label" parent="UI/Status"]
-margin_left = 240.0
+margin_left = 220.0
 margin_top = 3.0
-margin_right = 467.0
+margin_right = 482.0
 margin_bottom = 34.0
-text = "Monday 24th September"
+rect_min_size = Vector2( 262, 0 )
+text = "Wednesday 24th September"
 
 [node name="VSeparator" type="VSeparator" parent="UI/Status"]
-margin_left = 471.0
-margin_right = 479.0
+margin_left = 486.0
+margin_right = 494.0
 margin_bottom = 37.0
 
 [node name="Time" type="Label" parent="UI/Status"]
-margin_left = 483.0
+margin_left = 498.0
 margin_top = 3.0
-margin_right = 571.0
+margin_right = 590.0
 margin_bottom = 34.0
+rect_min_size = Vector2( 92, 0 )
 text = "00:00:00"
 
 [node name="VSeparator2" type="VSeparator" parent="UI/Status"]
-margin_left = 575.0
-margin_right = 583.0
+margin_left = 594.0
+margin_right = 602.0
 margin_bottom = 37.0
 
 [node name="Advance" type="Button" parent="UI/Status"]
-margin_left = 587.0
-margin_right = 784.0
+margin_left = 606.0
+margin_right = 803.0
 margin_bottom = 37.0
 text = "Advance to next day"
 
