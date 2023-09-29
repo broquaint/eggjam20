@@ -18,10 +18,16 @@ _global_script_classes=[ {
 "class": "JobButton",
 "language": "GDScript",
 "path": "res://scripts/JobButton.gd"
+}, {
+"base": "Area2D",
+"class": "LifeSystemSwitch",
+"language": "GDScript",
+"path": "res://scripts/LifeSystemSwitch.gd"
 } ]
 _global_script_class_icons={
 "Butterfly": "",
-"JobButton": ""
+"JobButton": "",
+"LifeSystemSwitch": ""
 }
 
 [application]
