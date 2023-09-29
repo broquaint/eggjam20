@@ -1,10 +1,9 @@
 extends Node2D
 
 signal clock_tick(clock_time)
-signal calendar_update(day)
+signal calendar_update()
 
 var clock_time : int = 0
-var day : int = 24
 
 func _ready():
 	randomize()
@@ -30,8 +29,7 @@ func _ready():
 
 func roll_over_clock():
 	clock_time = 0
-	day += 1
-	emit_signal("calendar_update", day)
+	emit_signal("calendar_update")
 
 func tick():
 	clock_time += 1
