@@ -14,4 +14,4 @@ func change_update_measures():
 func update_measures():
 	$Energy/Value/Current.rect_size.x = 128 * (Habitat.energy_percent() / 100)
 	$Terrarium/Value/Current.rect_size.x = 128 * (Habitat.terrarium_percent() / 100)
-	#	$LifeSystemsMeter.rect_size.x = 128 * (Habitat.life_systems / 100)
+	$LifeSystems/Value/Current.rect_size.x = 128 * (Habitat.life_systems_percent() / 100)

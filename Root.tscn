@@ -103,6 +103,11 @@ margin_top = 47.0
 margin_right = 128.0
 margin_bottom = 90.0
 
+[node name="LifeSystems" parent="UI/Measures" instance=ExtResource( 6 )]
+margin_top = 94.0
+margin_right = 128.0
+margin_bottom = 137.0
+
 [node name="LifeSystemsMeter" type="ColorRect" parent="UI/Measures"]
 visible = false
 margin_top = 4.0

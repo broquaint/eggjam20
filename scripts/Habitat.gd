@@ -47,7 +47,7 @@ var jobs = [
 func _ready():
 	self.energy = ENERGY_MAX
 	self.terrarium = TERRARIUM_MAX
-#	self.life_systems = LIFE_SYSTEMS_MAX
+	self.life_systems = LIFE_SYSTEMS_MAX
 #	var shields : float = 100.0
 #	var happiness : float = 100.0
 #	var efficiency : float = 100.0
@@ -55,6 +55,7 @@ func _ready():
 func update_measures(_time: int, delta: int):
 	energy -= float(delta)#  / float(ENERGY_USAGE)
 	terrarium -= float(delta)# / float(TERRARIUM_DETERIORATION)
+	life_systems -= float(delta)
 #	print("energy now ", energy, " after ", delta)
 #	life_systems -= float(clock_time) / float(LIFE_SYSTEMS_WEAR)
 
@@ -63,8 +64,9 @@ func job_begun(job):
 	emit_signal("measures_updated")
 
 func _job_feed_reactor():
+	# Should really do all this in the actual Root node
 	var feed_reactor = feed_reactor_scene.instance()
-	feed_reactor.position = Vector2(112, 84)
+	feed_reactor.position = Vector2(140, 48)
 	get_node("/root/Root").add_child(feed_reactor)
 	var res = yield(feed_reactor, "game_completed")
 
@@ -80,7 +82,7 @@ func _job_feed_reactor():
 
 func _job_rotate_hydroponics():
 	var maintain_hydroponics = maintain_hydroponics_scene.instance()
-	maintain_hydroponics.position = Vector2(112, 84)
+	maintain_hydroponics.position = Vector2(140, 48)
 	get_node("/root/Root").add_child(maintain_hydroponics)
 	var score = yield(maintain_hydroponics, "game_completed")
 
@@ -99,6 +101,9 @@ func energy_percent():
 
 func terrarium_percent():
 	return 100 * (terrarium / TERRARIUM_MAX)
+
+func life_systems_percent():
+	return 100 * (life_systems / LIFE_SYSTEMS_MAX)
 
 class Job:
 	var description : String
