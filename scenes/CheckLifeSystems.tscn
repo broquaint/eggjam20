@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://assets/images/switcher f2.png" type="Texture" id=1]
 [ext_resource path="res://assets/images/switcher f1.png" type="Texture" id=2]
@@ -12,9 +12,6 @@ animations = [ {
 "name": "default",
 "speed": 6.0
 } ]
-
-[sub_resource type="RectangleShape2D" id=2]
-extents = Vector2( 46, 42.5 )
 
 [node name="CheckLifeSystems" type="Node2D"]
 script = ExtResource( 8 )
@@ -50,11 +47,10 @@ default_color = Color( 0.984314, 0.94902, 0.211765, 1 )
 
 [node name="SwitchLane" type="Tween" parent="."]
 
-[node name="Bot" type="Area2D" parent="."]
+[node name="Bot" type="KinematicBody2D" parent="."]
 
 [node name="Sprite" type="AnimatedSprite" parent="Bot"]
 frames = SubResource( 1 )
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Bot"]
-position = Vector2( -1, 5.5 )
-shape = SubResource( 2 )
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Bot"]
+polygon = PoolVector2Array( 29, -20, 32, 6, 44, 8, 47, 31, 30, 49, -28, 49, -40, 33, -46, 33, -40, -16, -16, -33, 9, -33 )

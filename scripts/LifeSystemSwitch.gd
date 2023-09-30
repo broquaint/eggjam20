@@ -14,6 +14,7 @@ export var system : String
 
 var normal :  Texture
 var inverse : Texture
+var critter : RigidBody2D
 
 func _ready():
 	match system:

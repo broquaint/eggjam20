@@ -42,11 +42,14 @@
 **** Mini game ideas
      - Feed reactor :: Puzzle Bobble style aim at a fixed/moving target
      - Hydroponics rack ::
-          - butterfly catching
-          - one–shot snake across a grid of plants
-          - slot machine style rotating objects that need to be stopped in place
-          - catch falling water
-     - Check life systems :: Autorunner repairing issues as they appear
+       - butterfly catching
+       - one–shot snake across a grid of plants
+       - slot machine style rotating objects that need to be stopped in place
+       - catch falling water
+     - Check life systems ::
+          Life systems consists of: air/water/gravity
+       - Autorunner repairing issues as they appear
+       - 
      - Correct habitat pos :: dodge 'em up? simplified pool game?
      - Heat sinks coordinated :: a rhythm-type game where scrolling
           ribbons are aligned
