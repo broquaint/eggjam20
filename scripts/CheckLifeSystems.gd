@@ -7,6 +7,9 @@ var switch_lanes = [116, 220, 324]
 var all_switches = []
 var all_critters = []
 
+var o2_total = 0
+var h2o_total = 0
+
 onready var switch_scene = load("res://scenes/LifeSystemSwitch.tscn")
 onready var critter_scene = load("res://scenes/Critter.tscn")
 
@@ -17,10 +20,10 @@ func make_switch(system, is_on):
 	return switch
 
 func _ready():
-	randomize()
+#	randomize()
 	$Bot.position = Vector2(192, lanes[current_lane])
 	$Bot/Sprite.playing = true
-#	var switches = [$H2oOn, $H2oOff, $O2On, $O2Off]
+
 	var switches = [
 		make_switch('h2o', true),
 		make_switch('h2o', false),
@@ -28,7 +31,8 @@ func _ready():
 		make_switch('o2', false)
 	]
 	var bag = switches.duplicate()
-	for i in range(1,40):
+
+	for i in range(1,41):
 		var rand_switch = bag[randi() % bag.size()]
 		
 		var new_switch = rand_switch.duplicate()
@@ -36,11 +40,15 @@ func _ready():
 		new_switch.visible = true
 		new_switch.connect('body_entered', self, 'switch_entered', [new_switch])
 		new_switch.connect('body_exited', self, 'switch_exited', [new_switch])
-		# TODO make use of this signal for live updates
-		# new_switch.connect('switch_flipped', self, 'system_change')
 		add_child(new_switch)
 		move_child(new_switch, 2)
 		all_switches.append(new_switch)
+
+		match new_switch.system:
+			'o2':
+				o2_total += 1
+			'h2o':
+				h2o_total += 1
 
 		if randi() % 2 == 0 and not new_switch.is_on:
 			var critter = critter_scene.instance()
@@ -63,10 +71,21 @@ func _process(delta):
 		elif Input.is_action_just_pressed("move_down") and current_lane < 2:
 			current_lane += 1
 			animate_lane_switch()
+
+	var o2_count = 0
+	var h2o_count = 0
 	for switch in all_switches:
 		switch.position.x -= delta * 200
+		match switch.system:
+			'o2':
+				o2_count += 1 if switch.is_on else 0
+			'h2o':
+				h2o_count += 1 if switch.is_on else 0
 	for critter in all_critters:
 		critter.position.x -= delta * 200
+
+	$Status/O2Score.text  = '%d/%d' % [o2_count,  o2_total]
+	$Status/H2OScore.text = '%d/%d' % [h2o_count, h2o_total]
 
 func animate_lane_switch():
 	$SwitchLane.interpolate_property(
