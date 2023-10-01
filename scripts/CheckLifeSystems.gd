@@ -1,9 +1,20 @@
 extends Node2D
 
+signal play_started()
+signal game_completed(o2_score, h2o_score)
+
+enum PlayState {
+	AT_START,
+	PLAYING,
+	ALL_DONE
+}
+
+var play_state
 var current_lane = 1
 
 var lanes = [118, 222, 326]
 var switch_lanes = [116, 220, 324]
+
 var all_switches = []
 var all_critters = []
 
@@ -20,6 +31,7 @@ func make_switch(system, is_on):
 	return switch
 
 func _ready():
+	play_state = PlayState.AT_START
 #	randomize()
 	$Bot.position = Vector2(192, lanes[current_lane])
 	$Bot/Sprite.playing = true
@@ -64,6 +76,13 @@ func _ready():
 			bag = switches.duplicate()
 
 func _process(delta):
+	if Input.is_action_just_pressed("move_up") or Input.is_action_just_pressed("move_down"):
+		play_state = PlayState.PLAYING
+		emit_signal('play_started')
+
+	if play_state == PlayState.AT_START:
+		return
+
 	if not $SwitchLane.is_active():
 		if Input.is_action_just_pressed("move_up") and current_lane > 0:
 			current_lane -= 1
@@ -86,6 +105,11 @@ func _process(delta):
 
 	$Status/O2Score.text  = '%d/%d' % [o2_count,  o2_total]
 	$Status/H2OScore.text = '%d/%d' % [h2o_count, h2o_total]
+
+	if all_switches.back().position.x < 0:
+		play_state = PlayState.ALL_DONE
+		emit_signal('game_completed', o2_total/o2_count, h2o_total/h2o_count)
+		print('all done!')
 
 func animate_lane_switch():
 	$SwitchLane.interpolate_property(
