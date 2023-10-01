@@ -21,6 +21,8 @@ onready var feed_reactor_scene = preload("res://scenes/FeedReactor.tscn")
 onready var maintain_hydroponics_scene = preload("res://scenes/MaintainHydroponics.tscn")
 onready var check_life_systems_scene = preload("res://scenes/CheckLifeSystems.tscn")
 
+onready var root = get_node('/root/Root')
+
 var energy : float = 100.0
 var terrarium : float = 100.0
 var life_systems : float = 100.0
@@ -72,16 +74,8 @@ func job_begun(job):
 	emit_signal("measures_updated")
 
 func _job_feed_reactor():
-	# Should really do all this in the actual Root node
-	var feed_reactor = feed_reactor_scene.instance()
-	feed_reactor.position = Vector2(140, 48)
-	get_node("/root/Root").add_child(feed_reactor)
-	var res = yield(feed_reactor, "game_completed")
-
-	yield(get_tree().create_timer(2.0), 'timeout')
-	var fade = get_tree().create_tween()
-	fade.tween_property(feed_reactor, 'modulate', Color('#00ffffff'), 1.0)
-	fade.tween_callback(feed_reactor, 'queue_free')
+	root.display_job(feed_reactor_scene)
+	var res = yield(root, 'job_finished')
 
 	var up_by = float(ENERGY_USAGE) * (float(res[1]) / float(res[0]))
 	var new_val = clamp(energy + up_by, 0.0, float(ENERGY_MAX))
@@ -89,15 +83,8 @@ func _job_feed_reactor():
 	energy = new_val
 
 func _job_rotate_hydroponics():
-	var maintain_hydroponics = maintain_hydroponics_scene.instance()
-	maintain_hydroponics.position = Vector2(140, 48)
-	get_node("/root/Root").add_child(maintain_hydroponics)
-	var score = yield(maintain_hydroponics, "game_completed")
-
-	yield(get_tree().create_timer(1.0), 'timeout')
-	var fade = get_tree().create_tween()
-	fade.tween_property(maintain_hydroponics, 'modulate', Color('#00ffffff'), 1.0)
-	fade.tween_callback(maintain_hydroponics, 'queue_free')
+	root.display_job(maintain_hydroponics_scene)
+	var score = yield(root, 'job_finished')
 
 	var up_by = float(TERRARIUM_DETERIORATION) * (1 + (score/10))
 	var new_val = clamp(terrarium + up_by, 0.0, float(TERRARIUM_MAX))
@@ -105,15 +92,8 @@ func _job_rotate_hydroponics():
 	terrarium = new_val
 
 func _job_check_life_systems():
-	var check_life_systems = check_life_systems_scene.instance()
-	check_life_systems.position = Vector2(140, 48)
-	get_node("/root/Root").add_child(check_life_systems)
-	var res = yield(check_life_systems, "game_completed")
-
-	yield(get_tree().create_timer(1.0), 'timeout')
-	var fade = get_tree().create_tween()
-	fade.tween_property(check_life_systems, 'modulate', Color('#00ffffff'), 1.0)
-	fade.tween_callback(check_life_systems, 'queue_free')
+	root.display_job(check_life_systems_scene)
+	var res = yield(root, 'job_finished')
 
 	var up_by = float(LIFE_SYSTEMS_WEAR) * (res[0] + res[1])
 	var new_val = clamp(life_systems + up_by, 0.0, float(LIFE_SYSTEMS_MAX))

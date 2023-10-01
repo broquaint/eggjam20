@@ -2,6 +2,7 @@ extends Node2D
 
 signal clock_tick(clock_time)
 signal calendar_update()
+signal job_finished(res)
 
 var clock_time : int = 0
 
@@ -50,3 +51,17 @@ func advance_day():
 
 	emit_signal("clock_tick", clock_time, 1)
 	$PassageOfTime.start()
+
+func display_job(job_scene):
+	# Should really do all this in the actual Root node
+	var job = job_scene.instance()
+	job.position = Vector2(140, 48)
+	add_child(job)
+	var res = yield(job, "game_completed")
+
+	yield(get_tree().create_timer(2.0), 'timeout')
+	var fade = get_tree().create_tween()
+	fade.tween_property(job, 'modulate', Color('#00ffffff'), 1.0)
+	fade.tween_callback(job, 'queue_free')
+
+	emit_signal("job_finished", res)
