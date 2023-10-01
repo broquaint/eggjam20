@@ -15,6 +15,9 @@ var current_lane = 1
 var lanes = [118, 222, 326]
 var switch_lanes = [116, 220, 324]
 
+var switch_speed = 0
+var switch_speed_max = 250
+
 var all_switches = []
 var all_critters = []
 
@@ -79,6 +82,8 @@ func _process(delta):
 	if Input.is_action_just_pressed("move_up") or Input.is_action_just_pressed("move_down"):
 		play_state = PlayState.PLAYING
 		emit_signal('play_started')
+		var speed_up = get_tree().create_tween()
+		speed_up.tween_property(self, 'switch_speed', switch_speed_max, 1.5)
 
 	if play_state == PlayState.AT_START:
 		return
@@ -94,22 +99,21 @@ func _process(delta):
 	var o2_count = 0
 	var h2o_count = 0
 	for switch in all_switches:
-		switch.position.x -= delta * 200
+		switch.position.x -= delta * switch_speed
 		match switch.system:
 			'o2':
 				o2_count += 1 if switch.is_on else 0
 			'h2o':
 				h2o_count += 1 if switch.is_on else 0
 	for critter in all_critters:
-		critter.position.x -= delta * 200
+		critter.position.x -= delta * switch_speed
 
 	$Status/O2Score.text  = '%d/%d' % [o2_count,  o2_total]
 	$Status/H2OScore.text = '%d/%d' % [h2o_count, h2o_total]
 
-	if all_switches.back().position.x < 0:
+	if play_state != PlayState.ALL_DONE and all_switches.back().position.x < 0:
 		play_state = PlayState.ALL_DONE
 		emit_signal('game_completed', o2_total/o2_count, h2o_total/h2o_count)
-		print('all done!')
 
 func animate_lane_switch():
 	$SwitchLane.interpolate_property(

@@ -93,3 +93,5 @@ end
 *** Implement message system
     Log what has happened so the play knows what's going on. Possibly
     also lace it with chatty update messages to help new players.
+*** Add "start' indicators for games
+    Arrows or something to indicate that will initiate the game.

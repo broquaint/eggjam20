@@ -8,7 +8,7 @@ const WEEK : int = DAY * 7
 
 const ENERGY_USAGE = DAY
 const TERRARIUM_DETERIORATION = DAY
-#const LIFE_SYSTEMS_WEAR = DAY
+const LIFE_SYSTEMS_WEAR = DAY
 # happiness should be based on other factors not arbitrarily worn down
 # ditto efficiency
 # shield usage should be lumpy
@@ -19,6 +19,7 @@ const LIFE_SYSTEMS_MAX = WEEK / 2
 
 onready var feed_reactor_scene = preload("res://scenes/FeedReactor.tscn")
 onready var maintain_hydroponics_scene = preload("res://scenes/MaintainHydroponics.tscn")
+onready var check_life_systems_scene = preload("res://scenes/CheckLifeSystems.tscn")
 
 var energy : float = 100.0
 var terrarium : float = 100.0
@@ -41,6 +42,13 @@ var jobs = [
 		112233,
 		'Wednesday',
 		funcref(self, '_job_rotate_hydroponics')
+	),
+	Job.create(
+		'Check life systems ',
+		'life_systems',
+		123123,
+		'Thursday',
+		funcref(self, '_job_check_life_systems')
 	)
 ]
 
@@ -95,6 +103,22 @@ func _job_rotate_hydroponics():
 	var new_val = clamp(terrarium + up_by, 0.0, float(TERRARIUM_MAX))
 	print("terrarium from ", terrarium, ' to ', new_val, ' based on ', score, ' up by ', up_by)
 	terrarium = new_val
+
+func _job_check_life_systems():
+	var check_life_systems = check_life_systems_scene.instance()
+	check_life_systems.position = Vector2(140, 48)
+	get_node("/root/Root").add_child(check_life_systems)
+	var res = yield(check_life_systems, "game_completed")
+
+	yield(get_tree().create_timer(1.0), 'timeout')
+	var fade = get_tree().create_tween()
+	fade.tween_property(check_life_systems, 'modulate', Color('#00ffffff'), 1.0)
+	fade.tween_callback(check_life_systems, 'queue_free')
+
+	var up_by = float(LIFE_SYSTEMS_WEAR) * (res[0] + res[1])
+	var new_val = clamp(life_systems + up_by, 0.0, float(LIFE_SYSTEMS_MAX))
+	print("life_systems from ", life_systems, ' to ', new_val, ' based on ', res, ' up by ', up_by)
+	life_systems = new_val
 
 func energy_percent():
 	return 100 * (energy / ENERGY_MAX)
