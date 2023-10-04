@@ -108,55 +108,6 @@ margin_top = 94.0
 margin_right = 128.0
 margin_bottom = 137.0
 
-[node name="LifeSystemsMeter" type="ColorRect" parent="UI/Measures"]
-visible = false
-margin_top = 4.0
-margin_right = 128.0
-margin_bottom = 12.0
-rect_min_size = Vector2( 0, 8 )
-
-[node name="Label6" type="Label" parent="UI/Measures"]
-visible = false
-margin_top = 4.0
-margin_right = 128.0
-margin_bottom = 35.0
-text = "Shields"
-
-[node name="ShieldMeter" type="ColorRect" parent="UI/Measures"]
-visible = false
-margin_top = 4.0
-margin_right = 128.0
-margin_bottom = 12.0
-rect_min_size = Vector2( 0, 8 )
-
-[node name="Label3" type="Label" parent="UI/Measures"]
-visible = false
-margin_top = 4.0
-margin_right = 128.0
-margin_bottom = 35.0
-text = "Happiness"
-
-[node name="HappinessMeter" type="ColorRect" parent="UI/Measures"]
-visible = false
-margin_top = 4.0
-margin_right = 128.0
-margin_bottom = 12.0
-rect_min_size = Vector2( 0, 8 )
-
-[node name="Label4" type="Label" parent="UI/Measures"]
-visible = false
-margin_top = 4.0
-margin_right = 128.0
-margin_bottom = 35.0
-text = "Efficiency"
-
-[node name="EfficiencyMeter" type="ColorRect" parent="UI/Measures"]
-visible = false
-margin_top = 4.0
-margin_right = 128.0
-margin_bottom = 12.0
-rect_min_size = Vector2( 0, 8 )
-
 [node name="JobList" type="VBoxContainer" parent="UI"]
 margin_left = 767.0
 margin_top = 69.0

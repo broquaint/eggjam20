@@ -15,7 +15,7 @@ const LIFE_SYSTEMS_WEAR = DAY
 
 const ENERGY_MAX = WEEK
 const TERRARIUM_MAX = WEEK * 2
-const LIFE_SYSTEMS_MAX = WEEK / 2
+const LIFE_SYSTEMS_MAX = WEEK * 1.2
 
 onready var feed_reactor_scene = preload("res://scenes/FeedReactor.tscn")
 onready var maintain_hydroponics_scene = preload("res://scenes/MaintainHydroponics.tscn")
@@ -91,6 +91,8 @@ func _job_rotate_hydroponics():
 	print("terrarium from ", terrarium, ' to ', new_val, ' based on ', score, ' up by ', up_by)
 	terrarium = new_val
 
+	energy -= float(ENERGY_USAGE) / 2
+
 func _job_check_life_systems():
 	root.display_job(check_life_systems_scene)
 	var res = yield(root, 'job_finished')
@@ -99,6 +101,8 @@ func _job_check_life_systems():
 	var new_val = clamp(life_systems + up_by, 0.0, float(LIFE_SYSTEMS_MAX))
 	print("life_systems from ", life_systems, ' to ', new_val, ' based on ', res, ' up by ', up_by)
 	life_systems = new_val
+
+	energy -= float(ENERGY_USAGE)
 
 func energy_percent():
 	return 100 * (energy / ENERGY_MAX)

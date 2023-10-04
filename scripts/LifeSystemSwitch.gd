@@ -38,4 +38,4 @@ func switch_flipped():
 	$Sprite.texture = self.inverse
 	is_on = not is_on
 	self.modulate = Color('#99e550') if is_on else Color('#ac3232')
-	print("switch ", system, " was ", not is_on, " now ", is_on)
+#	print("switch ", system, " was ", not is_on, " now ", is_on)
