@@ -11,6 +11,7 @@ func _ready():
 
 	connect("clock_tick", $UI/Status, "update_clock")
 	connect("calendar_update", $UI/Status, "update_date")
+	connect("calendar_update", Habitat, "day_done")
 	connect("clock_tick", $UI/Measures, "tick_update_measures")
 	connect("clock_tick", Habitat, "update_measures")
 	Habitat.connect("measures_updated", $UI/Measures, "change_update_measures")
@@ -52,9 +53,8 @@ func advance_day():
 	emit_signal("clock_tick", clock_time, 1)
 	$PassageOfTime.start()
 
-func display_job(job_scene):
-	# Should really do all this in the actual Root node
-	var job = job_scene.instance()
+func display_job(job_scene, arguments = {}):
+	var job = JobFactory.make_scene(job_scene, arguments)
 	job.position = Vector2(140, 48)
 	add_child(job)
 	var res = yield(job, "game_completed")
@@ -63,5 +63,6 @@ func display_job(job_scene):
 	var fade = get_tree().create_tween()
 	fade.tween_property(job, 'modulate', Color('#00ffffff'), 1.0)
 	fade.tween_callback(job, 'queue_free')
+	yield(fade, 'finished')
 
 	emit_signal("job_finished", res)

@@ -17,18 +17,24 @@ const ENERGY_MAX = WEEK
 const TERRARIUM_MAX = WEEK * 2
 const LIFE_SYSTEMS_MAX = WEEK * 1.2
 
-onready var feed_reactor_scene = preload("res://scenes/FeedReactor.tscn")
-onready var maintain_hydroponics_scene = preload("res://scenes/MaintainHydroponics.tscn")
-onready var check_life_systems_scene = preload("res://scenes/CheckLifeSystems.tscn")
+var feed_reactor_scene = "res://scenes/FeedReactor.tscn"
+var check_life_systems_scene = "res://scenes/CheckLifeSystems.tscn"
+var maintain_hydroponics_scene = "res://scenes/MaintainHydroponics.tscn"
 
 onready var root = get_node('/root/Root')
 
+# measures
 var energy : float = 100.0
 var terrarium : float = 100.0
 var life_systems : float = 100.0
 var shields : float = 100.0
 var happiness : float = 100.0
 var efficiency : float = 100.0
+
+# resources
+var trash_balls : int = 2
+var butterflies : int = 10
+var critters : int = 5 # On off switches instead?
 
 var jobs = [
 	Job.create(
@@ -69,21 +75,27 @@ func update_measures(_time: int, delta: int):
 #	print("energy now ", energy, " after ", delta)
 #	life_systems -= float(clock_time) / float(LIFE_SYSTEMS_WEAR)
 
+func day_done():
+	trash_balls = clamp(trash_balls + 1, 1, 8)
+	butterflies = clamp(butterflies + 2, 1, 20)
+	critters    = clamp(critters    + 1, 1, 18)
+
 func job_begun(job):
 	job.change_effect.call_func()
 	emit_signal("measures_updated")
 
 func _job_feed_reactor():
-	root.display_job(feed_reactor_scene)
+	root.display_job(feed_reactor_scene, { trash_balls = trash_balls })
 	var res = yield(root, 'job_finished')
 
-	var up_by = float(ENERGY_USAGE) * (float(res[1]) / float(res[0]))
+	var up_by = float(ENERGY_USAGE) * (float(res.score) / float(res.total))
 	var new_val = clamp(energy + up_by, 0.0, float(ENERGY_MAX))
 	print("energy from ", energy, ' to ', new_val, ' based on ', res, ' up by ', up_by)
 	energy = new_val
+	trash_balls -= res.total
 
 func _job_rotate_hydroponics():
-	root.display_job(maintain_hydroponics_scene)
+	root.display_job(maintain_hydroponics_scene, { butterflies = butterflies })
 	var score = yield(root, 'job_finished')
 
 	var up_by = float(TERRARIUM_DETERIORATION) * (1 + (score/10))
@@ -92,17 +104,19 @@ func _job_rotate_hydroponics():
 	terrarium = new_val
 
 	energy -= float(ENERGY_USAGE) / 2
+	trash_balls += 1
 
 func _job_check_life_systems():
-	root.display_job(check_life_systems_scene)
+	root.display_job(check_life_systems_scene, { critters = critters })
 	var res = yield(root, 'job_finished')
 
-	var up_by = float(LIFE_SYSTEMS_WEAR) * (res[0] + res[1])
+	var up_by = float(LIFE_SYSTEMS_WEAR) * (res.o2_score + res.h2o_score)
 	var new_val = clamp(life_systems + up_by, 0.0, float(LIFE_SYSTEMS_MAX))
 	print("life_systems from ", life_systems, ' to ', new_val, ' based on ', res, ' up by ', up_by)
-	life_systems = new_val
+	life_systems = new_val	
 
 	energy -= float(ENERGY_USAGE)
+	trash_balls += 1
 
 func energy_percent():
 	return 100 * (energy / ENERGY_MAX)

@@ -1,4 +1,4 @@
-extends Node2D
+extends JobBase
 
 signal play_started()
 signal game_completed(o2_score, h2o_score)
@@ -21,17 +21,13 @@ var switch_speed_max = 250
 var all_switches = []
 var all_critters = []
 
-var o2_total = 0
-var h2o_total = 0
+var o2_total = 10
+var h2o_total = 10
+var critter_total = 0
 
 onready var switch_scene = load("res://scenes/LifeSystemSwitch.tscn")
 onready var critter_scene = load("res://scenes/Critter.tscn")
 
-func make_switch(system, is_on):
-	var switch : LifeSystemSwitch = switch_scene.instance()
-	switch.system = system
-	switch.is_on = is_on
-	return switch
 
 func _ready():
 	play_state = PlayState.AT_START
@@ -39,19 +35,26 @@ func _ready():
 	$Bot.position = Vector2(192, lanes[current_lane])
 	$Bot/Sprite.playing = true
 
-	var switches = [
-		make_switch('h2o', true),
-		make_switch('h2o', false),
-		make_switch('o2', true),
-		make_switch('o2', false)
-	]
-	var bag = switches.duplicate()
+func make_switch(system, is_on):
+	var switch : LifeSystemSwitch = switch_scene.instance()
+	switch.setup(system, is_on)
+	return switch
 
-	for i in range(1,41):
-		var rand_switch = bag[randi() % bag.size()]
-		
-		var new_switch = rand_switch.duplicate()
-		new_switch.position = Vector2(256 + (256 * i), switch_lanes[randi() % switch_lanes.size()])
+func setup(arguments):
+	var new_switches = []
+	for _i in range(0, 10):
+		new_switches.append(make_switch('o2', true))
+		new_switches.append(make_switch('h2o', true))
+
+	var rand_indices = range(0, 20)
+	rand_indices.shuffle()
+	var critter_indices = rand_indices.slice(0, arguments.critters)
+	for idx in critter_indices:
+		new_switches[idx].switch_flipped()
+
+	for i in range(0, new_switches.size()):
+		var new_switch = new_switches[randi() % new_switches.size()]
+		new_switch.position = Vector2(256 + (256 * (i+1)), switch_lanes[randi() % switch_lanes.size()])
 		new_switch.visible = true
 		new_switch.connect('body_entered', self, 'switch_entered', [new_switch])
 		new_switch.connect('body_exited', self, 'switch_exited', [new_switch])
@@ -59,13 +62,7 @@ func _ready():
 		move_child(new_switch, 2)
 		all_switches.append(new_switch)
 
-		match new_switch.system:
-			'o2':
-				o2_total += 1
-			'h2o':
-				h2o_total += 1
-
-		if randi() % 2 == 0 and not new_switch.is_on:
+		if not new_switch.is_on:
 			var critter = critter_scene.instance()
 			critter.position = new_switch.position
 			critter.add_torque(1.0)
@@ -74,9 +71,7 @@ func _ready():
 			all_critters.append(critter)
 			new_switch.critter = critter
 
-		bag.erase(rand_switch)
-		if bag.empty():
-			bag = switches.duplicate()
+		new_switches.erase(new_switch)
 
 func _process(delta):
 	if Input.is_action_just_pressed("move_up") or Input.is_action_just_pressed("move_down"):
@@ -113,7 +108,7 @@ func _process(delta):
 
 	if play_state != PlayState.ALL_DONE and all_switches.back().position.x < 0:
 		play_state = PlayState.ALL_DONE
-		emit_signal('game_completed', o2_total/o2_count, h2o_total/h2o_count)
+		emit_signal('game_completed', {o2_score = o2_total/o2_count, h2o_score = h2o_total/h2o_count})
 
 func animate_lane_switch():
 	$SwitchLane.interpolate_property(

@@ -1,4 +1,4 @@
-extends Node2D
+extends JobBase
 
 signal game_completed(ball_total, score)
 
@@ -39,7 +39,12 @@ func _ready():
 	add_child(trash_ball)
 	trash_balls.append(trash_ball)
 
+func setup(arguments):
+	trash_ball_count = arguments.trash_balls
+	trash_ball_total = trash_ball_count
+
 func _process(_delta):
+	# TODO: Handle no balls being available!
 	if Input.is_action_just_pressed("ui_accept") and launch_state == LauncherState.READY and play_state != PlayState.TRASH_FINISHED:
 		if play_state == PlayState.AT_START and $PlayTime.is_stopped():
 			$PlayTime.start()
@@ -89,7 +94,7 @@ func end_game():
 			var shrink = get_tree().create_tween()
 			shrink.tween_property(ball.get_node('Sprite'), 'scale', Vector2.ZERO, 1.0)
 			shrink.set_parallel()
-	emit_signal("game_completed", trash_ball_total, score)
+	emit_signal("game_completed", {total=trash_ball_total, score=score})
 
 func trash_in_reactor(ball):
 	if play_state == PlayState.ALL_DONE:
@@ -105,7 +110,7 @@ func trash_in_reactor(ball):
 	ht.start()
 	ball.in_reactor = true
 
-func trash_out_reactor(ball):
+func trash_out_reactor(ball: Node2D):
 	if play_state == PlayState.ALL_DONE:
 		return
 

@@ -1,4 +1,4 @@
-extends Node2D
+extends JobBase
 
 signal play_started()
 signal game_completed(score)
@@ -20,10 +20,6 @@ var score : int = 0
 func _ready():
 #	randomize()
 	play_state = PlayState.AT_START
-	for i in range(1, butterfly_total+1):
-		var x = (1 + (i % 4)) * 150
-		var y = (1 + floor(i / 4)) * 150
-		add_butterfly(Vector2(randi() % 100 + x, randi() % 100 + y))
 
 	$NetForButterflies.position = Vector2(100, 100)
 	$NetForButterflies.rotation_degrees = 90
@@ -33,8 +29,15 @@ func _ready():
 
 	$PlayTime.connect('timeout', self, 'end_game')
 
+func setup(arguments):
+	butterfly_total = arguments.butterflies
+	for i in range(1, butterfly_total+1):
+		var x = (1 + (i % 4)) * 150
+		var y = (1 + floor(i / 4)) * 150
+		add_butterfly(Vector2(randi() % 100 + x, randi() % 100 + y))
+
 func add_butterfly(offset):
-	print("butterfly at ", offset.x, 'x', offset.y)
+#	print("butterfly at ", offset.x, 'x', offset.y)
 	var bf = butterfly_scene.instance()
 	bf.get_node("EscapeWindow").connect("timeout", self, "caught_butterfly", [bf])
 	bf.position = Vector2(offset.x , offset.y)
