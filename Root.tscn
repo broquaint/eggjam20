@@ -13,6 +13,10 @@ bg_color = Color( 0.317647, 0.317647, 0.317647, 0.392157 )
 [node name="Root" type="Node2D"]
 script = ExtResource( 3 )
 
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 505, 361 )
+texture = ExtResource( 2 )
+
 [node name="UI" type="Control" parent="."]
 margin_right = 1024.0
 margin_bottom = 768.0
@@ -186,8 +190,43 @@ margin_right = 158.0
 margin_bottom = 31.0
 text = "Everything is fine"
 
-[node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 505, 361 )
-texture = ExtResource( 2 )
+[node name="IntroMessage" type="AcceptDialog" parent="UI"]
+visible = true
+margin_left = 151.0
+margin_top = 69.0
+margin_right = 866.0
+margin_bottom = 680.0
+window_title = "Introduction"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/IntroMessage"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 707.0
+margin_bottom = 558.0
+bbcode_enabled = true
+bbcode_text = "Welcome to the Makruea Yao Space Habitat!
+
+As the incoming director you are now responsible for day–to–day oversight—making sure there's enough energy to run the habitat, that the food sources are well maintained and so forth.
+
+You will find a list of these mundane tasks on your right, the state of the various habitat systems on the left, the current time & date above and all the moment–to–moment minutae  below.
+
+Should you find the passage of time onerous you can, as digital entity, snooze through to the next day and any chores that await.
+
+Best of luck in your duties, fellow director!
+
+Yours faithfully,
+The Former Director of Habitats"
+text = "Welcome to the Makruea Yao Space Habitat!
+
+As the incoming director you are now responsible for day–to–day oversight—making sure there's enough energy to run the habitat, that the food sources are well maintained and so forth.
+
+You will find a list of these mundane tasks on your right, the state of the various habitat systems on the left, the current time & date above and all the moment–to–moment minutae  below.
+
+Should you find the passage of time onerous you can, as digital entity, snooze through to the next day and any chores that await.
+
+Best of luck in your duties, fellow director!
+
+Yours faithfully,
+The Former Director of Habitats"
 
 [node name="PassageOfTime" type="Timer" parent="."]

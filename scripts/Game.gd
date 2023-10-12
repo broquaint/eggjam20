@@ -9,6 +9,8 @@ var clock_time : int = 0
 func _ready():
 	randomize()
 
+	Habitat.load_settings()
+
 	connect("clock_tick", $UI/Status, "update_clock")
 	connect("calendar_update", $UI/Status, "update_date")
 	connect("calendar_update", Habitat, "day_done")
@@ -26,6 +28,11 @@ func _ready():
 		jb.text = job.description
 		jb.connect('job_started', Habitat, 'job_begun')
 		$UI/JobList/Jobs.add_child(jb)
+
+	if not Habitat.settings.seen_intro:
+		$UI/IntroMessage.show()
+
+	$UI/IntroMessage.connect('confirmed', Habitat, 'intro_acknowledged')
 
 	$PassageOfTime.start()
 

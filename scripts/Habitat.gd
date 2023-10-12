@@ -3,6 +3,8 @@ extends Node
 
 signal measures_updated()
 
+const CONFIG_PATH = 'user://gamestate.cfg'
+
 const DAY : int  = 60 * 60 * 24
 const WEEK : int = DAY * 7
 
@@ -16,6 +18,8 @@ const LIFE_SYSTEMS_WEAR = DAY
 const ENERGY_MAX = WEEK
 const TERRARIUM_MAX = WEEK * 2
 const LIFE_SYSTEMS_MAX = WEEK * 1.2
+
+var settings = {}
 
 var feed_reactor_scene = "res://scenes/FeedReactor.tscn"
 var check_life_systems_scene = "res://scenes/CheckLifeSystems.tscn"
@@ -35,6 +39,8 @@ var efficiency : float = 100.0
 var trash_balls : int = 2
 var butterflies : int = 10
 var critters : int = 5 # On off switches instead?
+
+var intro_seen = false
 
 var jobs = [
 	Job.create(
@@ -126,6 +132,28 @@ func terrarium_percent():
 
 func life_systems_percent():
 	return 100 * (life_systems / LIFE_SYSTEMS_MAX)
+
+func intro_acknowledged():
+	self.intro_seen = true
+	save_setting_value('seen_intro', true)
+
+func load_settings():
+	var config = ConfigFile.new()
+	var res = config.load(CONFIG_PATH)
+	if res != OK:
+		settings = {
+			seen_intro = false,
+		}
+	else:
+		settings.seen_intro   = config.get_value('settings', 'seen_intro', false)
+
+func save_setting_value(k, v):
+	var config = ConfigFile.new()
+	for sk in settings.keys():
+		config.set_value('settings', sk, settings[sk])
+	config.set_value('settings', k, v)
+	settings[k] = v
+	config.save(CONFIG_PATH)
 
 class Job:
 	var description : String
