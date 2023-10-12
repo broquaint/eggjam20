@@ -108,6 +108,7 @@ func _process(delta):
 
 	if play_state != PlayState.ALL_DONE and all_switches.back().position.x < 0:
 		play_state = PlayState.ALL_DONE
+		.job_summary('O2 switches: %d/%d, H20 switches: %d/%d' % [o2_count, o2_total, h2o_count, h2o_total])
 		emit_signal('game_completed', {o2_score = o2_total/o2_count, h2o_score = h2o_total/h2o_count})
 
 func animate_lane_switch():

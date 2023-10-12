@@ -126,5 +126,5 @@ rect_min_size = Vector2( 60, 0 )
 text = "00:00"
 
 [node name="PlayTime" type="Timer" parent="."]
-wait_time = 30.0
+wait_time = 24.0
 one_shot = true

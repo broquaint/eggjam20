@@ -186,12 +186,12 @@ scroll_horizontal_enabled = false
 script = ExtResource( 8 )
 
 [node name="List" type="VBoxContainer" parent="UI/Messages"]
-margin_right = 1026.0
-margin_bottom = 31.0
+margin_right = 1016.0
+margin_bottom = 38.0
 
 [node name="ExampleA" parent="UI/Messages/List" instance=ExtResource( 7 )]
-margin_right = 1026.0
-margin_bottom = 31.0
+margin_right = 1016.0
+margin_bottom = 38.0
 
 [node name="IntroMessage" type="AcceptDialog" parent="UI"]
 margin_left = 151.0

@@ -85,8 +85,9 @@ func end_game():
 	if not $PlayTime.is_stopped():
 		$PlayTime.paused = true
 	$SwingAnimationPlayer.stop(false)
+	.job_summary("Of %d trash balls launched %d landed in the reactor" % [trash_ball_total, score])
 	# Wait some time for things to play out then call it whatever state.
-	yield(get_tree().create_timer(3.0), 'timeout')
+	yield(get_tree().create_timer(4.5), 'timeout')
 	play_state = PlayState.ALL_DONE
 	$ReactorAnimationPlayer.play("StopReactor")
 	for ball in trash_balls:

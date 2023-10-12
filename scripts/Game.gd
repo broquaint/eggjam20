@@ -6,6 +6,7 @@ signal job_finished(res)
 signal daily_message(source, message)
 
 var clock_time : int = 0
+var clock_step : int = 1
 
 func _ready():
 	randomize()
@@ -49,11 +50,11 @@ func roll_over_clock():
 		next_daily_message()
 
 func next_daily_message():
-	emit_signal('daily_message', "helper", day_help_messages.pop_front())
+	emit_signal('daily_message', "Helper", day_help_messages.pop_front())
 
 func tick():
-	clock_time += 1
-	if clock_time == (60*60*24):
+	clock_time += clock_step
+	if clock_time >= (60*60*24):
 		roll_over_clock()
 	emit_signal("clock_tick", clock_time, 1)
 	$PassageOfTime.start()
@@ -72,8 +73,11 @@ func advance_day():
 	$PassageOfTime.start()
 
 func display_job(job_scene, arguments = {}):
+	clock_step = 1800
+
 	var job = JobFactory.make_scene(job_scene, arguments)
 	job.position = Vector2(140, 48)
+	job.connect('job_summary_message', $UI/Messages, 'message_received')
 	add_child(job)
 	var res = yield(job, "game_completed")
 
@@ -84,6 +88,7 @@ func display_job(job_scene, arguments = {}):
 	yield(fade, 'finished')
 
 	emit_signal("job_finished", res)
+	clock_step = 1
 
 var day_help_messages = [
 	# Monday

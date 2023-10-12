@@ -97,8 +97,7 @@ func _job_feed_reactor():
 
 	var up_by = float(ENERGY_USAGE) * (float(res.score) / float(res.total))
 	var new_val = clamp(energy + up_by, 0.0, float(ENERGY_MAX))
-#	emit_signal('measure_change_message', "System update", "energy from ", energy, ' to ', new_val, ' based on ', res, ' up by ', up_by)
-	emit_signal('measure_change_message', "System update", "energy from %.2f to %.2f, up by %.2f" % [energy, new_val, up_by])
+	system_update_message("Energy from %.2f to %.2f, up by %.2f" % [energy, new_val, up_by])
 	energy = new_val
 	trash_balls -= res.total
 
@@ -108,7 +107,7 @@ func _job_rotate_hydroponics():
 
 	var up_by = float(TERRARIUM_DETERIORATION) * (1 + (score/10))
 	var new_val = clamp(terrarium + up_by, 0.0, float(TERRARIUM_MAX))
-	print("terrarium from ", terrarium, ' to ', new_val, ' based on ', score, ' up by ', up_by)
+	system_update_message("Terrarium from %.2f to %.2f, up by %.2f" % [terrarium, new_val, up_by])
 	terrarium = new_val
 
 	energy -= float(ENERGY_USAGE) / 2
@@ -120,8 +119,8 @@ func _job_check_life_systems():
 
 	var up_by = float(LIFE_SYSTEMS_WEAR) * (res.o2_score + res.h2o_score)
 	var new_val = clamp(life_systems + up_by, 0.0, float(LIFE_SYSTEMS_MAX))
-	print("life_systems from ", life_systems, ' to ', new_val, ' based on ', res, ' up by ', up_by)
-	life_systems = new_val	
+	system_update_message("LifeSystems from %.2f to %.2f, up by %.2f" % [life_systems, new_val, up_by])
+	life_systems = new_val
 
 	energy -= float(ENERGY_USAGE)
 	trash_balls += 1
@@ -134,6 +133,10 @@ func terrarium_percent():
 
 func life_systems_percent():
 	return 100 * (life_systems / LIFE_SYSTEMS_MAX)
+
+func system_update_message(msg):
+	emit_signal('measure_change_message', "System update", msg)
+
 
 func intro_acknowledged():
 	self.intro_seen = true

@@ -91,6 +91,9 @@ func caught_butterfly(butterfly):
 		end_game()
 
 func end_game():
+	# Really shouldn't hard code that 24.0!
+	.job_summary('Caught %d butterflies of %d in %.2f seconds' % [score, butterfly_total, 24.0 if $PlayTime.is_stopped() else 24.0-$PlayTime.time_left])
+
 	play_state = PlayState.ALL_DONE
 	$PlayTime.paused = true
 	emit_signal('game_completed', score)
