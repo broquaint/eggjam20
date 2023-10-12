@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://ui.tres" type="Theme" id=1]
 [ext_resource path="res://assets/images/habitat.png" type="Texture" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://scripts/Status.gd" type="Script" id=4]
 [ext_resource path="res://scripts/Measures.gd" type="Script" id=5]
 [ext_resource path="res://scenes/MeasureStatus.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scenes/MessageEntry.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scripts/MessageManager.gd" type="Script" id=8]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.317647, 0.317647, 0.317647, 0.392157 )
@@ -175,23 +177,23 @@ margin_right = 256.0
 margin_bottom = 340.0
 text = "Reply to questions"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="UI"]
+[node name="Messages" type="ScrollContainer" parent="UI"]
 margin_top = 576.0
 margin_right = 1024.0
 margin_bottom = 768.0
 custom_styles/bg = SubResource( 1 )
+scroll_horizontal_enabled = false
+script = ExtResource( 8 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/ScrollContainer"]
-margin_right = 158.0
+[node name="List" type="VBoxContainer" parent="UI/Messages"]
+margin_right = 1026.0
 margin_bottom = 31.0
 
-[node name="Label" type="Label" parent="UI/ScrollContainer/VBoxContainer"]
-margin_right = 158.0
+[node name="ExampleA" parent="UI/Messages/List" instance=ExtResource( 7 )]
+margin_right = 1026.0
 margin_bottom = 31.0
-text = "Everything is fine"
 
 [node name="IntroMessage" type="AcceptDialog" parent="UI"]
-visible = true
 margin_left = 151.0
 margin_top = 69.0
 margin_right = 866.0

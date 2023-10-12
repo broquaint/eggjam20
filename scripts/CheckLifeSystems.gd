@@ -48,7 +48,7 @@ func setup(arguments):
 
 	var rand_indices = range(0, 20)
 	rand_indices.shuffle()
-	var critter_indices = rand_indices.slice(0, arguments.critters)
+	var critter_indices = rand_indices.slice(0, arguments.critters-1)
 	for idx in critter_indices:
 		new_switches[idx].switch_flipped()
 

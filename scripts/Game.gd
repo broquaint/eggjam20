@@ -3,6 +3,7 @@ extends Node2D
 signal clock_tick(clock_time)
 signal calendar_update()
 signal job_finished(res)
+signal daily_message(source, message)
 
 var clock_time : int = 0
 
@@ -20,6 +21,9 @@ func _ready():
 	$UI/Status/Advance.connect("pressed", self, "advance_day")
 	$PassageOfTime.connect('timeout', self, 'tick')
 
+	connect('daily_message', $UI/Messages, 'message_received')
+	Habitat.connect('measure_change_message', $UI/Messages, 'message_received')
+
 	for stub in $UI/JobList/Jobs.get_children():
 		$UI/JobList/Jobs.remove_child(stub)
 	for job in Habitat.jobs:
@@ -36,9 +40,16 @@ func _ready():
 
 	$PassageOfTime.start()
 
+	next_daily_message()
+
 func roll_over_clock():
 	clock_time = 0
 	emit_signal("calendar_update")
+	if not day_help_messages.empty():
+		next_daily_message()
+
+func next_daily_message():
+	emit_signal('daily_message', "helper", day_help_messages.pop_front())
 
 func tick():
 	clock_time += 1
@@ -73,3 +84,16 @@ func display_job(job_scene, arguments = {}):
 	yield(fade, 'finished')
 
 	emit_signal("job_finished", res)
+
+var day_help_messages = [
+	# Monday
+	'Welcome to the Maekruea Yao Space Habitat, Director! As today is a Monday and all the systems are running smoothly you have nothing to do today.', # Maybe make games freely playable on Mondays??
+	# Tuesday
+	'As the first working day of the week you might want to attend to the "Maintain hydroponics" job.',
+	# Wednesday
+	'The critters in the lifesytems are at it again, why don\'t you "Check lifesystems"?',
+	# Thursday
+	'This is yet another day …',
+	# Friday
+	'Last day of the week, hurrah!'
+]

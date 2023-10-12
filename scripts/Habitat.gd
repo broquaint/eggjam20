@@ -2,6 +2,7 @@
 extends Node
 
 signal measures_updated()
+signal measure_change_message(source, message)
 
 const CONFIG_PATH = 'user://gamestate.cfg'
 
@@ -96,7 +97,8 @@ func _job_feed_reactor():
 
 	var up_by = float(ENERGY_USAGE) * (float(res.score) / float(res.total))
 	var new_val = clamp(energy + up_by, 0.0, float(ENERGY_MAX))
-	print("energy from ", energy, ' to ', new_val, ' based on ', res, ' up by ', up_by)
+#	emit_signal('measure_change_message', "System update", "energy from ", energy, ' to ', new_val, ' based on ', res, ' up by ', up_by)
+	emit_signal('measure_change_message', "System update", "energy from %.2f to %.2f, up by %.2f" % [energy, new_val, up_by])
 	energy = new_val
 	trash_balls -= res.total
 
