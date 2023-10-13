@@ -29,15 +29,22 @@ func _ready():
 
 	$PlayTime.connect('timeout', self, 'end_game')
 
+	# Workaround for when launching this scene in isolation.
+	if has_node('/root/MaintainHydroponics'):
+		setup({butterflies=20})
+
 func setup(arguments):
 	butterfly_total = arguments.butterflies
 	for i in range(1, butterfly_total+1):
 		var x = (1 + (i % 4)) * 150
 		var y = (1 + floor(i / 4)) * 150
+		# Hack to handle lots of butterflies.
+		if y >= 600:
+			y = (1 + floor((i % 4) / 4)) * 200
 		add_butterfly(Vector2(randi() % 100 + x, randi() % 100 + y))
 
 func add_butterfly(offset):
-#	print("butterfly at ", offset.x, 'x', offset.y)
+	print("butterfly at ", offset.x, 'x', offset.y)
 	var bf = butterfly_scene.instance()
 	bf.get_node("EscapeWindow").connect("timeout", self, "caught_butterfly", [bf])
 	bf.position = Vector2(offset.x , offset.y)

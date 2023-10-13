@@ -27,11 +27,15 @@ func _ready():
 
 	for stub in $UI/JobList/Jobs.get_children():
 		$UI/JobList/Jobs.remove_child(stub)
+
 	for job in Habitat.jobs:
 		var jb = JobButton.new()
 		jb.job = job
 		jb.text = job.description
 		jb.connect('job_started', Habitat, 'job_begun')
+		jb.connect('job_started', $UI/JobList, 'job_start')
+		jb.connect('job_ready',   $UI/JobList, 'job_end')
+		connect('clock_tick', jb, 'cooldown_tick')
 		$UI/JobList/Jobs.add_child(jb)
 
 	if not Habitat.settings.seen_intro:
@@ -56,7 +60,7 @@ func tick():
 	clock_time += clock_step
 	if clock_time >= (60*60*24):
 		roll_over_clock()
-	emit_signal("clock_tick", clock_time, 1)
+	emit_signal("clock_tick", clock_time, clock_step)
 	$PassageOfTime.start()
 
 func advance_day():
@@ -88,6 +92,7 @@ func display_job(job_scene, arguments = {}):
 	yield(fade, 'finished')
 
 	emit_signal("job_finished", res)
+
 	clock_step = 1
 
 var day_help_messages = [

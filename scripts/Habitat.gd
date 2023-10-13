@@ -88,7 +88,8 @@ func day_done():
 	critters    = clamp(critters    + 1, 1, 18)
 
 func job_begun(job):
-	job.change_effect.call_func()
+	yield(job.change_effect.call_func(), "completed")
+	
 	emit_signal("measures_updated")
 
 func _job_feed_reactor():

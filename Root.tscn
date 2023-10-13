@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://ui.tres" type="Theme" id=1]
 [ext_resource path="res://assets/images/habitat.png" type="Texture" id=2]
@@ -8,16 +8,13 @@
 [ext_resource path="res://scenes/MeasureStatus.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scenes/MessageEntry.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scripts/MessageManager.gd" type="Script" id=8]
+[ext_resource path="res://scripts/JobsStatus.gd" type="Script" id=9]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.317647, 0.317647, 0.317647, 0.392157 )
 
 [node name="Root" type="Node2D"]
 script = ExtResource( 3 )
-
-[node name="Sprite" type="Sprite" parent="."]
-position = Vector2( 505, 361 )
-texture = ExtResource( 2 )
 
 [node name="UI" type="Control" parent="."]
 margin_right = 1024.0
@@ -119,11 +116,12 @@ margin_left = 767.0
 margin_top = 69.0
 margin_right = 1023.0
 margin_bottom = 581.0
+script = ExtResource( 9 )
 
 [node name="Status" type="Label" parent="UI/JobList"]
 margin_right = 256.0
 margin_bottom = 31.0
-text = "Jobs 0/7"
+text = "Jobs 0/3"
 
 [node name="Jobs" type="VBoxContainer" parent="UI/JobList"]
 margin_top = 35.0
@@ -230,5 +228,9 @@ Best of luck in your duties, fellow director!
 
 Yours faithfully,
 The Former Director of Habitats"
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( 505, 361 )
+texture = ExtResource( 2 )
 
 [node name="PassageOfTime" type="Timer" parent="."]
