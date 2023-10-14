@@ -7,7 +7,7 @@ signal measure_change_message(source, message)
 const CONFIG_PATH = 'user://gamestate.cfg'
 
 const DAY : int  = 60 * 60 * 24
-const WEEK : int = DAY * 7
+const WEEK : int = DAY * 5
 
 const ENERGY_USAGE = DAY
 const TERRARIUM_DETERIORATION = DAY
@@ -45,13 +45,6 @@ var intro_seen = false
 
 var jobs = [
 	Job.create(
-		'Move waste to reactor',
-		'energy',
-		123456,
-		'Tuesday',
-		funcref(self, '_job_feed_reactor')
-	),
-	Job.create(
 		'Maintain hydroponics',
 		'terrarium',
 		112233,
@@ -64,7 +57,14 @@ var jobs = [
 		123123,
 		'Thursday',
 		funcref(self, '_job_check_life_systems')
-	)
+	),
+	Job.create(
+		'Move waste to reactor',
+		'energy',
+		123456,
+		'Tuesday',
+		funcref(self, '_job_feed_reactor')
+	),
 ]
 
 func _ready():
@@ -85,7 +85,7 @@ func update_measures(_time: int, delta: int):
 func day_done():
 	trash_balls = clamp(trash_balls + 1, 1, 8)
 	butterflies = clamp(butterflies + 2, 1, 20)
-	critters    = clamp(critters    + 1, 1, 18)
+	critters    = clamp(critters    + 2, 1, 18)
 
 func job_begun(job):
 	yield(job.change_effect.call_func(), "completed")
@@ -96,9 +96,11 @@ func _job_feed_reactor():
 	root.display_job(feed_reactor_scene, { trash_balls = trash_balls })
 	var res = yield(root, 'job_finished')
 
-	var up_by = float(ENERGY_USAGE) * (float(res.score) / float(res.total))
+	var up_by = float(ENERGY_USAGE) * res.score
 	var new_val = clamp(energy + up_by, 0.0, float(ENERGY_MAX))
-	system_update_message("Energy from %.2f to %.2f, up by %.2f" % [energy, new_val, up_by])
+
+	system_update_message("Energy from %.2f%% to %.2f%%, up by %.2f%%" % [100*(energy/ENERGY_MAX), 100*(new_val/ENERGY_MAX), 100*(up_by/ENERGY_MAX)])
+
 	energy = new_val
 	trash_balls -= res.total
 
@@ -106,13 +108,16 @@ func _job_rotate_hydroponics():
 	root.display_job(maintain_hydroponics_scene, { butterflies = butterflies })
 	var score = yield(root, 'job_finished')
 
-	var up_by = float(TERRARIUM_DETERIORATION) * (1 + (score/10))
+	var up_by = float(TERRARIUM_DETERIORATION) * (score / 4)
 	var new_val = clamp(terrarium + up_by, 0.0, float(TERRARIUM_MAX))
-	system_update_message("Terrarium from %.2f to %.2f, up by %.2f" % [terrarium, new_val, up_by])
+
+	system_update_message("Terrarium from %.2f%% to %.2f%%, up by %.2f%%" % [100*(terrarium/TERRARIUM_MAX), 100*(new_val/TERRARIUM_MAX), 100*(up_by/TERRARIUM_MAX)])
+
 	terrarium = new_val
 
 	energy -= float(ENERGY_USAGE) / 2
 	trash_balls += 1
+	butterflies = clamp(butterflies - score, 6, 999)
 
 func _job_check_life_systems():
 	root.display_job(check_life_systems_scene, { critters = critters })
@@ -120,11 +125,14 @@ func _job_check_life_systems():
 
 	var up_by = float(LIFE_SYSTEMS_WEAR) * (res.o2_score + res.h2o_score)
 	var new_val = clamp(life_systems + up_by, 0.0, float(LIFE_SYSTEMS_MAX))
-	system_update_message("LifeSystems from %.2f to %.2f, up by %.2f" % [life_systems, new_val, up_by])
+
+	system_update_message("LifeSystems from %.2f%% to %.2f%%, up by %.2f%%" % [100*(life_systems/LIFE_SYSTEMS_MAX), 100*(new_val/LIFE_SYSTEMS_MAX), 100*(up_by/LIFE_SYSTEMS_MAX)])
+
 	life_systems = new_val
 
 	energy -= float(ENERGY_USAGE)
 	trash_balls += 1
+	critters = clamp(critters - res.o2_score*10+res.h2o_score*10, 2, 999)
 
 func energy_percent():
 	return 100 * (energy / ENERGY_MAX)

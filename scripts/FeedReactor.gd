@@ -42,6 +42,15 @@ func _ready():
 func setup(arguments):
 	trash_ball_count = arguments.trash_balls
 	trash_ball_total = trash_ball_count
+	$PlayTime.wait_time = play_duration()
+
+func play_duration():
+	if trash_ball_total <= 5:
+		return 30
+	else:
+		var rem = trash_ball_total - 2
+		var res = 30 + stepify(5*(rem / 3), 5)
+		return res
 
 func _process(_delta):
 	# TODO: Handle no balls being available!
@@ -85,7 +94,6 @@ func end_game():
 	if not $PlayTime.is_stopped():
 		$PlayTime.paused = true
 	$SwingAnimationPlayer.stop(false)
-	.job_summary("Of %d trash balls launched %d landed in the reactor" % [trash_ball_total, score])
 	# Wait some time for things to play out then call it whatever state.
 	yield(get_tree().create_timer(4.5), 'timeout')
 	play_state = PlayState.ALL_DONE
@@ -95,6 +103,8 @@ func end_game():
 			var shrink = get_tree().create_tween()
 			shrink.tween_property(ball.get_node('Sprite'), 'scale', Vector2.ZERO, 1.0)
 			shrink.set_parallel()
+
+	.job_summary("Of %d trash balls launched %d landed in the reactor" % [trash_ball_total, score])
 	emit_signal("game_completed", {total=trash_ball_total, score=score})
 
 func trash_in_reactor(ball):

@@ -44,7 +44,7 @@ func setup(arguments):
 		add_butterfly(Vector2(randi() % 100 + x, randi() % 100 + y))
 
 func add_butterfly(offset):
-	print("butterfly at ", offset.x, 'x', offset.y)
+#	print("butterfly at ", offset.x, 'x', offset.y)
 	var bf = butterfly_scene.instance()
 	bf.get_node("EscapeWindow").connect("timeout", self, "caught_butterfly", [bf])
 	bf.position = Vector2(offset.x , offset.y)

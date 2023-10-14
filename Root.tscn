@@ -175,6 +175,13 @@ margin_right = 256.0
 margin_bottom = 340.0
 text = "Reply to questions"
 
+[node name="MessageSourceHighlight" type="ColorRect" parent="UI"]
+margin_top = 576.0
+margin_right = 160.0
+margin_bottom = 768.0
+rect_min_size = Vector2( 160, 192 )
+color = Color( 1, 1, 1, 0.0588235 )
+
 [node name="Messages" type="ScrollContainer" parent="UI"]
 margin_top = 576.0
 margin_right = 1024.0
