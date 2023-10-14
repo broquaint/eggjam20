@@ -42,6 +42,8 @@ func setup(arguments):
 		if y >= 600:
 			y = (1 + floor((i % 4) / 4)) * 200
 		add_butterfly(Vector2(randi() % 100 + x, randi() % 100 + y))
+	.job_description("Guide the butterfly portal towards the butterflies using your arrow keys, after a moment in the maw of the portal they will be safely telported back to their home. Don't worry about bumping into them, they are hardy space butterflies!")
+
 
 func add_butterfly(offset):
 #	print("butterfly at ", offset.x, 'x', offset.y)

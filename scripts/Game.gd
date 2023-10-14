@@ -82,6 +82,7 @@ func display_job(job_scene, arguments = {}):
 	var job = JobFactory.make_scene(job_scene, arguments)
 	job.position = Vector2(140, 48)
 	job.connect('job_summary_message', $UI/Messages, 'message_received')
+	job.connect('job_description_message', $UI/Messages, 'message_received')
 	add_child(job)
 	var res = yield(job, "game_completed")
 

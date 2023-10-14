@@ -43,6 +43,7 @@ func setup(arguments):
 	trash_ball_count = arguments.trash_balls
 	trash_ball_total = trash_ball_count
 	$PlayTime.wait_time = play_duration()
+	.job_description("Feed the trash balls into the habitat energy reactor by launching them with your space bar. Once every ball is launched each one that remains in the reactor will be turned into energy to power all functions on the habitat.")
 
 func play_duration():
 	if trash_ball_total <= 5:

@@ -73,6 +73,8 @@ func setup(arguments):
 
 		new_switches.erase(new_switch)
 
+	.job_description("Guide the safety bot through the life systems using the up & down arrow keys. If you see a critter on a switch knock it off and after a beat the bot should re–enable it. But beware those chaotic critters flipping further switches on their way out!")
+
 func _process(delta):
 	if Input.is_action_just_pressed("move_up") or Input.is_action_just_pressed("move_down"):
 		play_state = PlayState.PLAYING
