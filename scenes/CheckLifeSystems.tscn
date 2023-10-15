@@ -20,7 +20,7 @@ script = ExtResource( 8 )
 [node name="GameOutline" type="ColorRect" parent="."]
 margin_right = 800.0
 margin_bottom = 600.0
-color = Color( 0.203922, 0.203922, 0.203922, 0.501961 )
+color = Color( 0.203922, 0.203922, 0.203922, 0.870588 )
 
 [node name="Lane1" type="Line2D" parent="."]
 position = Vector2( 0, 64 )

@@ -91,7 +91,7 @@ tracks/0/keys = {
 bounce = 1.0
 
 [sub_resource type="RectangleShape2D" id=4]
-extents = Vector2( 10, 296.5 )
+extents = Vector2( 10, 299.375 )
 
 [sub_resource type="PhysicsMaterial" id=7]
 bounce = 1.0
@@ -102,7 +102,7 @@ script = ExtResource( 1 )
 [node name="ColorRect" type="ColorRect" parent="."]
 margin_right = 800.0
 margin_bottom = 600.0
-color = Color( 0.203922, 0.203922, 0.203922, 0.752941 )
+color = Color( 0.203922, 0.203922, 0.203922, 0.870588 )
 
 [node name="Trajectory" type="Line2D" parent="."]
 position = Vector2( 400, 550 )
@@ -114,7 +114,7 @@ default_color = Color( 0.415686, 0.745098, 0.188235, 1 )
 position = Vector2( 415, 131 )
 space_override = 3
 gravity_point = true
-linear_damp = 1.5
+linear_damp = 1.6
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ReactorInput"]
 visible = false
@@ -142,18 +142,35 @@ anims/StopReactor = SubResource( 14 )
 
 [node name="LeftWall" type="StaticBody2D" parent="."]
 physics_material_override = SubResource( 6 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="LeftWall"]
-position = Vector2( -9, 301 )
+position = Vector2( -8, 300.25 )
 shape = SubResource( 4 )
+
+[node name="ColorRect" type="ColorRect" parent="LeftWall"]
+margin_right = 2.0
+margin_bottom = 600.0
+color = Color( 0.607843, 0.678431, 0.717647, 1 )
 
 [node name="RightWall" type="StaticBody2D" parent="."]
 position = Vector2( 819, 0 )
 physics_material_override = SubResource( 7 )
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="RightWall"]
-position = Vector2( -9, 301 )
+position = Vector2( -11, 299.375 )
 shape = SubResource( 4 )
+
+[node name="ColorRect" type="ColorRect" parent="RightWall"]
+margin_left = -21.0
+margin_right = -19.0
+margin_bottom = 600.0
+color = Color( 0.607843, 0.678431, 0.717647, 1 )
 
 [node name="Reload" type="Timer" parent="."]
 wait_time = 2.0

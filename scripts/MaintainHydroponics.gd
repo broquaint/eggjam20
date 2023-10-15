@@ -110,5 +110,6 @@ func end_game():
 	if not butterflies.empty():
 		for wall in [$LeftWall, $RightWall, $TopWall, $BottomWall]:
 			wall.get_node('CollisionShape2D').disabled = true
+			wall.visible = false
 		for bf in butterflies:
 			bf.fly_away()

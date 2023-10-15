@@ -13,11 +13,14 @@ extents = Vector2( 437.5, 19 )
 
 [node name="MaintainHydroponics" type="Node2D"]
 script = ExtResource( 3 )
+__meta__ = {
+"_edit_vertical_guides_": [ 800.0 ]
+}
 
 [node name="GameOutline" type="ColorRect" parent="."]
 margin_right = 800.0
 margin_bottom = 600.0
-color = Color( 0.203922, 0.203922, 0.203922, 0.501961 )
+color = Color( 0.203922, 0.203922, 0.203922, 0.870588 )
 
 [node name="NetForButterflies" type="KinematicBody2D" parent="."]
 position = Vector2( 161, 115 )
@@ -46,7 +49,7 @@ scale = Vector2( 4.5, 4.3 )
 polygon = PoolVector2Array( -9.77778, -10, -10, 6.04651, -8.88889, 7.90698, -4.66667, 9.53488, -0.444445, 10, 4.66667, 9.53488, 8, 8.13953, 9.77778, 6.27907, 9.77778, -10, 8.88889, -10, 8.66667, -9.30233, 6.66667, -7.67442, 2, -6.27907, -2.44444, -6.27907, -6.44444, -7.44186, -8.88889, -9.06977, -9.11111, -10 )
 
 [node name="LeftWall" type="StaticBody2D" parent="."]
-position = Vector2( -12, 0 )
+position = Vector2( -10, 0 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -55,8 +58,14 @@ __meta__ = {
 position = Vector2( -8.5, 300 )
 shape = SubResource( 1 )
 
+[node name="ColorRect" type="ColorRect" parent="LeftWall"]
+margin_left = 10.0
+margin_right = 12.0
+margin_bottom = 600.0
+color = Color( 0.607843, 0.678431, 0.717647, 1 )
+
 [node name="RightWall" type="StaticBody2D" parent="."]
-position = Vector2( 824, 0 )
+position = Vector2( 823, 0 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -65,8 +74,14 @@ __meta__ = {
 position = Vector2( -4.25, 300 )
 shape = SubResource( 1 )
 
+[node name="ColorRect" type="ColorRect" parent="RightWall"]
+margin_left = -25.0
+margin_right = -23.0
+margin_bottom = 600.0
+color = Color( 0.607843, 0.678431, 0.717647, 1 )
+
 [node name="TopWall" type="StaticBody2D" parent="."]
-position = Vector2( 10, -13 )
+position = Vector2( 10, -11 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -75,8 +90,15 @@ __meta__ = {
 position = Vector2( 391, -6 )
 shape = SubResource( 2 )
 
+[node name="ColorRect" type="ColorRect" parent="TopWall"]
+margin_left = -8.0
+margin_top = 11.0
+margin_right = 788.0
+margin_bottom = 13.0
+color = Color( 0.607843, 0.678431, 0.717647, 1 )
+
 [node name="BottomWall" type="StaticBody2D" parent="."]
-position = Vector2( 11, 616 )
+position = Vector2( 0, 614 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -84,6 +106,13 @@ __meta__ = {
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BottomWall"]
 position = Vector2( 388.5, 3 )
 shape = SubResource( 2 )
+
+[node name="ColorRect" type="ColorRect" parent="BottomWall"]
+margin_left = 2.0
+margin_top = -16.0
+margin_right = 798.0
+margin_bottom = -14.0
+color = Color( 0.607843, 0.678431, 0.717647, 1 )
 
 [node name="StatusOutline" type="ColorRect" parent="."]
 margin_left = 507.0
