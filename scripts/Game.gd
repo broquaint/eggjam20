@@ -104,7 +104,20 @@ var day_help_messages = [
 	# Wednesday
 	'The critters in the lifesytems are at it again, why don\'t you "Check lifesystems"?',
 	# Thursday
-	'This is yet another day …',
+	"You would normally be busy on Thursday, aka Jupiter's day (the classical space god of choice), but we seem to have a gap in in the schedule …",
 	# Friday
-	'Last day of the week, hurrah!'
+	'Friday—last day of the space week so it\'s time to "Move waste to reactor" that is it to say: take out the trash.',
+	# Next Monday
+	"You made it through a full 5 day week and it's Monday again! Enjoy your copious free time.",
+	# Next Tuesday
+	"Those space butterflies just won't stay put, see to them with the \"Maintain hydroponics\" job!",
+	# Next Wednesday
+	"If only we could address the systemic causes of critters! Alas it's time to \"Check lifesystems\" again.",
+	# Next Thursday
+	"Thursday, Thor's Day, god of thunder, like a certain Jovian god of sky and thunder. In the before times it was actually the equivalent of a Tueday.",
+	# Next Friday
+	"End of another week, it's about time to \"Move waste to reactor\" if you haven't already (it doesn't make any odds to me, I'm not even sentient x_X).",
+	# Next Monday
+	"Well you've arrived at another fine Monday and the end of my helpful messages. No doubt you are doing just fine and the habitat is in safe hands. Enjoy your time as Director of Habitats at Makruea Yao!"
 ]
+

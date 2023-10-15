@@ -76,9 +76,9 @@ func _ready():
 #	var efficiency : float = 100.0
 
 func update_measures(_time: int, delta: int):
-	energy -= float(delta)#  / float(ENERGY_USAGE)
-	terrarium -= float(delta)# / float(TERRARIUM_DETERIORATION)
-	life_systems -= float(delta)
+	energy       = clamp(float(energy - delta), 0.0, ENERGY_MAX)
+	terrarium    = clamp(float(terrarium - delta), 0.0, TERRARIUM_MAX)
+	life_systems = clamp(float(life_systems - delta), 0.0, LIFE_SYSTEMS_MAX)
 #	print("energy now ", energy, " after ", delta)
 #	life_systems -= float(clock_time) / float(LIFE_SYSTEMS_WEAR)
 
